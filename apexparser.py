@@ -16,7 +16,7 @@ def __readFile(file):
 	with open(file) as f:
 		return f.read()
 
-def __parseParams(args):
+def __parse_params(args):
 	params = []
 	for arg in args.split(','):
 		arg_match = re_arg.search(arg)
@@ -27,7 +27,7 @@ def __parseParams(args):
 			params.append(p)
 	return params
 
-def __paraseHeader(header):		#TODO CHECK FOR CLASS HEADER
+def __parse_method_header(header):		#TODO ADD METHOD DESCRIPTION
 	minfo = methodinfo.MethodInfo()
 	param_desc_dict = {}
 	for line in header.split('\n'):
@@ -35,11 +35,7 @@ def __paraseHeader(header):		#TODO CHECK FOR CLASS HEADER
 		match_param = re_param.search(line)
 		match_return = re_return.search(line)
 		match_method = re_method.search(line)
-		print(line)
 		if match_param:
-			#p = methodinfo.ParamInfo()
-			#p.name = match_param.group('name')
-			#p.description = match_param.group('desc')
 			param_desc_dict[match_param.group('name')] = match_param.group('desc')
 		elif match_return:
 			pass
@@ -47,14 +43,24 @@ def __paraseHeader(header):		#TODO CHECK FOR CLASS HEADER
 			minfo.scope = match_method.group('scope')
 			minfo.returntype = match_method.group('returntype')
 			minfo.name = match_method.group('name')
-			params = __parseParams(match_method.group('args'))
+			params = __parse_params(match_method.group('args'))
 			for p in params:
 				if p.name in param_desc_dict:
 					p.description = param_desc_dict[p.name]
 			minfo.params.extend(params)
 	return minfo
 
-def parseFile(file):
+def __parse_class_header(header):
+	pass
+
+def parse_file(file):
 	content = __readFile(file)
 	result = re_header.findall(content)
-	__paraseHeader(result[1]) # TODO PARSE ALL HEADERS
+	cinfo = ClassInfo()
+	# TODO PARSE INITIAL HEADER FOR CLASS OR TRIGGER
+	methods = []
+	if len(result) > 1:
+		methods = [__parse_method_header(r) for r in result[1:]]
+
+	cinfo.methods = methods
+	return cinfo
