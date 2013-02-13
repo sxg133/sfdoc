@@ -16,6 +16,9 @@ def __readFile(file):
 	with open(file) as f:
 		return f.read()
 
+def __parse_class_header(header):	# TODO IMPLEMENT METHOD
+	pass
+
 def __parse_params(args):
 	params = []
 	for arg in args.split(','):
@@ -27,9 +30,10 @@ def __parse_params(args):
 			params.append(p)
 	return params
 
-def __parse_method_header(header):		#TODO ADD METHOD DESCRIPTION
+def __parse_method_header(header):
 	minfo = methodinfo.MethodInfo()
 	param_desc_dict = {}
+	desc = ''
 	for line in header.split('\n'):
 		line = line.strip()
 		match_param = re_param.search(line)
@@ -48,19 +52,20 @@ def __parse_method_header(header):		#TODO ADD METHOD DESCRIPTION
 				if p.name in param_desc_dict:
 					p.description = param_desc_dict[p.name]
 			minfo.params.extend(params)
+		elif line:
+			desc += re.sub('(/\*+|\*/)', '', line.strip())
+	minfo.description = re.sub('^' + minfo.name + '\s+', '', desc.strip())
 	return minfo
-
-def __parse_class_header(header):
-	pass
 
 def parse_file(file):
 	content = __readFile(file)
 	result = re_header.findall(content)
-	cinfo = ClassInfo()
+	cinfo = methodinfo.ClassInfo()
 	# TODO PARSE INITIAL HEADER FOR CLASS OR TRIGGER
 	methods = []
 	if len(result) > 1:
 		methods = [__parse_method_header(r) for r in result[1:]]
-
+	for m in methods:
+		print(m.description)
 	cinfo.methods = methods
 	return cinfo
