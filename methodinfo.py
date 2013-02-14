@@ -1,23 +1,27 @@
 class ClassInfo:
-	name = ''
-	desc = ''
-	authors = []
-	since = ''
-	methods = []
+	def __init__(self):
+		self.name = ''
+		self.desc = ''
+		self.authors = []
+		self.since = ''
+		self.methods = []
 
 class MethodInfo:
-	name = ''
-	description = ''
-	scope = ''
-	params = []
-	return_description = ''
-	return_type = ''
+	def __init__(self):
+		self.name = ''
+		self.description = ''
+		self.scope = ''
+		self.params = []
+		self.return_description = ''
+		self.return_type = ''
 
 class ParamInfo:
-	name = ''
-	description = ''
-	param_type = ''
+	def __init__(self):
+		self.name = ''
+		self.description = ''
+		self.param_type = ''
 
 class Author:
-	name = ''
-	email = ''
+	def __init__(self):
+		self.name = ''
+		self.email = ''
