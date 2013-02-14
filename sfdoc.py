@@ -34,4 +34,4 @@ if not os.path.exists(args.t):
 for c in classes:
 	sfdocmaker.create_outfile(classlist, c, args.t + '/' + c.name + '.html')
 
-shutil.copyfile('sfdoc.css', args.t + '/' + 'sfdoc.css')
+shutil.copy('sfdoc.css', args.t)
