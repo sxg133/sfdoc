@@ -6,6 +6,7 @@ import glob
 import argparse
 import apexparser
 import sfdocmaker
+import shutil
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
@@ -32,3 +33,5 @@ if not os.path.exists(args.t):
 	os.makedirs(args.t)
 for c in classes:
 	sfdocmaker.create_outfile(classlist, c, args.t + '/' + c.name + '.html')
+
+shutil.copyfile('sfdoc.css', args.t + '/' + 'sfdoc.css')

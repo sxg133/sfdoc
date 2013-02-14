@@ -1,0 +1,9 @@
+#sidebar {
+	float: left;
+}
+
+#content {
+	margin: auto;
+	min-width: 500px;
+	max-width: 970px;
+}
