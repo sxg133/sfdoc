@@ -5,7 +5,7 @@ pattern_header = r'/\*[^{]*{'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL)
 pattern_param = r'@param\s+(?P<name>[a-zA-Z]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param)
-pattern_return = r'@return\s+(?P<desc>.*)\s+'
+pattern_return = r'@return\s+(?P<desc>.*)'
 re_return = re.compile(pattern_return)
 pattern_method = r'(?P<scope>public|private|protected)\s+(static\s+)?(?P<returntype>[a-zA-Z\<\>]+)\s+(?P<name>[a-zA-Z]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method)
@@ -67,10 +67,10 @@ def __parse_method_header(header):
 		if match_param:
 			param_desc_dict[match_param.group('name')] = match_param.group('desc')
 		elif match_return:
-			pass
+			minfo.return_description = match_return.group('desc')
 		elif match_method:
 			minfo.scope = match_method.group('scope')
-			minfo.returntype = match_method.group('returntype')
+			minfo.return_type = match_method.group('returntype')
 			minfo.name = match_method.group('name')
 			params = __parse_params(match_method.group('args'))
 			for p in params:
