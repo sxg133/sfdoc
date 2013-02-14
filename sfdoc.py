@@ -5,6 +5,7 @@ import os
 import glob
 import argparse
 import apexparser
+import sfdocmaker
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
@@ -22,5 +23,11 @@ def get_files(dir, pattern="*.cls"):
 	return files
 
 args = parse_args()
+currentdir = os.path.dirname(os.path.realpath(__file__))
 files = get_files(args.s, args.p)
 classes = [apexparser.parse_file(f) for f in files]
+os.chdir(currentdir)
+classlist = [cinfo.name for cinfo in classes]
+if not os.path.exists(args.t):
+	os.makedirs(args.t)
+sfdocmaker.create_outfile(classlist, classes[0], args.t + '/' + classes[0].name + '.html')
