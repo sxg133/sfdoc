@@ -35,3 +35,4 @@ for c in classes:
 	sfdocmaker.create_outfile(classlist, c, args.t + '/' + c.name + '.html')
 
 shutil.copy('sfdoc.css', args.t)
+shutil.copy('normalize.css', args.t)
