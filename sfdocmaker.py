@@ -1,3 +1,6 @@
+def __get_class_item(classname):
+	return '<li><a href="' + classname + '.html">' + classname + '</a></li>'
+
 def __get_author_content(author):
 	return '<li>' + author.name + '</li>'
 
@@ -31,5 +34,7 @@ def create_outfile(classlist, cinfo, target, template_master='template_master.ht
 		content_method = f.read()
 	
 	new_content = __fill_in_class_content(content_master, content_method, cinfo, project_name)
+	class_items = [__get_class_item(c) for c in classlist]
+	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	with open(target, 'w+') as f:
 		f.write(new_content)

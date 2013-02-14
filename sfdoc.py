@@ -30,4 +30,5 @@ os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
 if not os.path.exists(args.t):
 	os.makedirs(args.t)
-sfdocmaker.create_outfile(classlist, classes[0], args.t + '/' + classes[0].name + '.html')
+for c in classes:
+	sfdocmaker.create_outfile(classlist, c, args.t + '/' + c.name + '.html')
