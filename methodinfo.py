@@ -17,3 +17,7 @@ class ParamInfo:
 	name = ''
 	description = ''
 	param_type = ''
+
+class Author:
+	name = ''
+	email = ''

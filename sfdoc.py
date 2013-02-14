@@ -18,10 +18,9 @@ def parse_args():
 def get_files(dir, pattern="*.cls"):
 	files = []
 	os.chdir(dir)
-	for f in glob.glob(pattern):
-		files.append(f)
+	files = [f for f in glob.glob(pattern) if not f.endswith('Test.cls')]	# Ignoring test classes for now
 	return files
 
 args = parse_args()
 files = get_files(args.s, args.p)
-apexparser.parse_file(files[0])
+classes = [apexparser.parse_file(f) for f in files]
