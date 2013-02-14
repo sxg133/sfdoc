@@ -32,7 +32,7 @@ def __parse_class_header(header):	# TODO IMPLEMENT METHOD
 		match_class = re_class.search(line)
 		if match_author:
 			author = methodinfo.Author()
-			author.name = match_author.group('name')
+			author.name = match_author.group('name').strip()
 			author.email = match_author.group('email')
 			cinfo.authors.append(author)
 		elif match_since:
