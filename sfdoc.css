@@ -77,3 +77,11 @@ table.params td, table.params th {
 	background-color: white;
 	padding: 5px;
 }
+
+div.method.private header {
+	background-color: #ECBEBE;
+}
+
+div.method.protected header {
+	background-color: #E9DF93;
+}
