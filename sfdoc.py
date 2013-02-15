@@ -11,9 +11,9 @@ import shutil
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
 	# TODO FIGURE OUT HOW TO MAKE SOURCE AND TARGET REQUIRED
-	parser.add_argument('-s', metavar='--source', nargs='?', help='Source directory')
-	parser.add_argument('-t', metavar='--target', nargs='?', help='Target directory')
-	parser.add_argument('-p', metavar='--pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
+	parser.add_argument('-s', '--source', metavar='--source', nargs='?', help='Source directory')
+	parser.add_argument('-t', '--target', metavar='--target', nargs='?', help='Target directory')
+	parser.add_argument('-p', '--pattern', metavar='--pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
 	args = parser.parse_args()
 	return args
 
@@ -25,14 +25,14 @@ def get_files(dir, pattern="*.cls"):
 
 args = parse_args()
 currentdir = os.path.dirname(os.path.realpath(__file__))
-files = get_files(args.s, args.p)
+files = get_files(args.source, args.pattern)
 classes = [apexparser.parse_file(f) for f in files]
 os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
-if not os.path.exists(args.t):
-	os.makedirs(args.t)
+if not os.path.exists(args.target):
+	os.makedirs(args.target)
 for c in classes:
-	sfdocmaker.create_outfile(classlist, c, args.t + '/' + c.name + '.html')
+	sfdocmaker.create_outfile(classlist, c, args.target + '/' + c.name + '.html')
 
-shutil.copy('sfdoc.css', args.t)
-shutil.copy('normalize.css', args.t)
+shutil.copy('sfdoc.css', args.target)
+shutil.copy('normalize.css', args.target)
