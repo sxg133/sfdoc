@@ -7,7 +7,7 @@ pattern_param = r'@param\s+(?P<name>[a-zA-Z]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param)
 pattern_return = r'@return\s+(?P<desc>.*)'
 re_return = re.compile(pattern_return)
-pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(static\s+)?(?P<returntype>[a-zA-Z\<\>,]+)\s+(?P<name>[a-zA-Z]+)\s*(?P<args>\(.*\))'
+pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(static\s+)?(?P<returntype>[a-zA-Z\<\>,_]+)\s+(?P<name>[a-zA-Z]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method)
 pattern_arg = r'(?P<argtype>[a-zA-Z\<\>]+)\s+(?P<name>[a-zA-Z]+)'
 re_arg = re.compile(pattern_arg)
@@ -91,7 +91,7 @@ def parse_file(file):
 	methods = []
 	if len(result) > 1:
 		methods = [__parse_method_header(r) for r in result[1:]]
-	
+
 	# Hack for methods w/o headers (probably need to rethink this entire module)
 	allmethods = re_method.findall(content)
 	mnames = [m.name for m in methods]
