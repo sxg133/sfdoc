@@ -91,5 +91,18 @@ def parse_file(file):
 	methods = []
 	if len(result) > 1:
 		methods = [__parse_method_header(r) for r in result[1:]]
+	
+	# Hack for methods w/o headers (probably need to rethink this entire module)
+	allmethods = re_method.findall(content)
+	mnames = [m.name for m in methods]
+	for m in allmethods:
+		if m[4] not in mnames:
+			meth = methodinfo.MethodInfo()
+			meth.scope = m[0]
+			meth.return_type = m[3]
+			meth.name = m[4]
+			meth.params = __parse_params(m[5])
+			methods.append(meth)
+
 	cinfo.methods = methods
 	return cinfo
