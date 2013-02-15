@@ -8,7 +8,8 @@ def __get_param_content(param):
 	return '<tr><td>' + param.name + '</td><td>' + param.param_type + '</td><td>' + param.description + '</td></tr>'
 
 def __fill_in_method_content(content_method, minfo):
-	new_content = content_method.replace('[methodname]', minfo.name)
+	new_content = content_method.replace('[methodname]', minfo.name + ' (' + minfo.scope + ')')
+	new_content = new_content.replace('[methodclass]', minfo.scope)
 	param_content = [__get_param_content(p) for p in minfo.params]
 	new_content = new_content.replace('[params]', ''.join(param_content))
 	new_content = new_content.replace('[returntype]',minfo.return_type)
