@@ -61,6 +61,10 @@ div.method > div {
 	font-size: 11pt;
 }
 
+div.method > div > p {
+	margin: 0 0 15px;
+}
+
 div.return {
 	margin-top: 20px;
 }
