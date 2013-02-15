@@ -12,6 +12,7 @@
 	margin: auto;
 	min-width: 500px;
 	max-width: 970px;
+	width: 55%;
 	height: 100%;
 	background-color: #E8E8E8;
 }
@@ -19,4 +20,8 @@
 .content {
 	margin: auto;
 	width: 90%;
+}
+
+#projectname {
+	padding: 20px 0;
 }
