@@ -10,9 +10,7 @@ import shutil
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
-	# TODO FIGURE OUT HOW TO MAKE SOURCE AND TARGET REQUIRED
-	parser.add_argument('-s', '--source', metavar='--source', nargs='?', help='Source directory')
-	parser.add_argument('-t', '--target', metavar='--target', nargs='?', help='Target directory')
+	parser.add_argument('dirs', metavar='directories', nargs=2, help='Source and target directories')
 	parser.add_argument('-p', '--pattern', metavar='--pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
 	args = parser.parse_args()
 	return args
@@ -24,15 +22,16 @@ def get_files(dir, pattern="*.cls"):
 	return files
 
 args = parse_args()
+[source, target] = args.dirs;
 currentdir = os.path.dirname(os.path.realpath(__file__))
-files = get_files(args.source, args.pattern)
+files = get_files(source, args.pattern)
 classes = [apexparser.parse_file(f) for f in files]
 os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
-if not os.path.exists(args.target):
-	os.makedirs(args.target)
+if not os.path.exists(target):
+	os.makedirs(target)
 for c in classes:
-	sfdocmaker.create_outfile(classlist, c, args.target + '/' + c.name + '.html')
+	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html')
 
-shutil.copy('sfdoc.css', args.target)
-shutil.copy('normalize.css', args.target)
+shutil.copy('sfdoc.css', target)
+shutil.copy('normalize.css', target)
