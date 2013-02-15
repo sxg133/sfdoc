@@ -10,6 +10,7 @@ def __get_param_content(param):
 def __fill_in_method_content(content_method, minfo):
 	new_content = content_method.replace('[methodname]', minfo.name)
 	new_content = new_content.replace('[methodscope]', minfo.scope)
+	new_content = new_content.replace('[constructor]', ('(constructor)' if minfo.is_constructor else ''))
 	new_content = new_content.replace('[methoddescription]', minfo.description)
 	param_content = [__get_param_content(p) for p in minfo.params]
 	new_content = new_content.replace('[params]', ''.join(param_content))

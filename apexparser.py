@@ -7,6 +7,8 @@ pattern_param = r'@param\s+(?P<name>[a-zA-Z]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param)
 pattern_return = r'@return\s+(?P<desc>.*)'
 re_return = re.compile(pattern_return)
+pattern_constructor = r'(?P<scope>public|private|protected)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+re_constructor = re.compile(pattern_constructor)
 pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(static\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method)
 pattern_arg = r'(?P<argtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z]+)'
@@ -63,11 +65,21 @@ def __parse_method_header(header):
 		line = line.strip()
 		match_param = re_param.search(line)
 		match_return = re_return.search(line)
+		match_constructor = re_constructor.search(line)
 		match_method = re_method.search(line)
 		if match_param:
 			param_desc_dict[match_param.group('name')] = match_param.group('desc')
 		elif match_return:
 			minfo.return_description = match_return.group('desc')
+		elif match_constructor:
+			minfo.scope = match_constructor.group('scope')
+			minfo.name = match_constructor.group('name')
+			params = __parse_params(match_constructor.group('args'))
+			for p in params:
+				if p.name in param_desc_dict:
+					p.description = param_desc_dict[p.name]
+			minfo.params.extend(params)
+			minfo.is_constructor = True
 		elif match_method:
 			minfo.scope = match_method.group('scope')
 			minfo.return_type = match_method.group('returntype')

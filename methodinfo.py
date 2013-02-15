@@ -14,6 +14,7 @@ class MethodInfo:
 		self.params = []
 		self.return_description = ''
 		self.return_type = ''
+		self.is_constructor = False
 
 class ParamInfo:
 	def __init__(self):
