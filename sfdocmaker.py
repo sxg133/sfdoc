@@ -19,6 +19,7 @@ def __fill_in_method_content(content_method, minfo):
 def __fill_in_class_content(content_master, content_method, cinfo, project_name):
 	new_content = content_master.replace('[projectname]', project_name)
 	new_content = new_content.replace('[classname]', cinfo.name)
+	new_content = new_content.replace('[classdescription]', cinfo.description)
 	new_content = new_content.replace('[since]', cinfo.since)
 	author_content = [__get_author_content(a) for a in cinfo.authors]
 	new_content = new_content.replace('[authors]', ''.join(author_content))
