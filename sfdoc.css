@@ -56,10 +56,20 @@ div.method h4 {
 	padding: 10px 0 10px 10px;
 }
 
-div.method > table, div.method > div {
+div.method > div {
 	margin-left: 40px;
+	font-size: 11pt;
 }
 
 div.return {
 	margin-top: 20px;
+}
+
+table.params th {
+}
+
+table.params td, table.params th {
+	border: solid thin black;
+	background-color: white;
+	padding: 5px;
 }
