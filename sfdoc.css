@@ -1,7 +1,24 @@
+body {
+	font-family: arial, sans-serif;
+}
+
+ul li {
+	list-style: none;
+}
+
+h5 {
+	display: inline;
+}
+
+p {
+	margin: 5px 0;
+}
+
 #projectheader {
 	background-color: #61B4CF;
 	padding: 5px;
-	color: #003344;
+	color: white;
+	font-family: Geneva, sans-serif;
 }
 
 #sidebar {
@@ -24,4 +41,21 @@
 
 #projectname {
 	padding: 20px 0;
+}
+
+div.method header {
+	background-color: #A3D6E7;
+	border-radius: 10px;
+}
+
+div.method h4 {
+	padding: 10px 0 10px 10px;
+}
+
+div.method > table, div.method > div {
+	margin-left: 40px;
+}
+
+div.return {
+	margin-top: 20px;
 }
