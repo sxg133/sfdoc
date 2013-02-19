@@ -12,6 +12,8 @@ pattern_constructor = r'(?P<scope>public|private|protected)\s+(?P<name>[a-zA-Z_]
 re_constructor = re.compile(pattern_constructor)
 pattern_method = r'(?P<scope>public|private|protected)\s(abstract\s+)?(virtual\s+)?(static\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method)
+pattern_interface_method = r'(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+re_interface_method = re.compile(pattern_interface_method)
 pattern_arg = r'(?P<argtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z]+)'
 re_arg = re.compile(pattern_arg)
 pattern_author = r'@author\s+(?P<name>[^\<]*)\<(?P<email>[a-zA-Z0-9@\.]+)\>'
@@ -42,6 +44,10 @@ def __parse_class_header(header):
 			cinfo.since = match_since.group('date')	# TODO CHECK OUT PYTHON DATE TYPES
 		elif match_class:
 			cinfo.name = match_class.group('name')
+			if 'interface' in match_class.group():
+				cinfo.is_interface = True
+			elif 'abstract' in match_class.group():
+				cinfo.is_abstract = True
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())
@@ -60,7 +66,7 @@ def __parse_params(args):
 			params.append(p)
 	return params
 
-def __parse_method_header(header):
+def __parse_method_header(header, is_interface=False):
 	minfo = methodinfo.MethodInfo()
 	param_desc_dict = {}
 	desc = ''
@@ -69,7 +75,10 @@ def __parse_method_header(header):
 		match_param = re_param.search(line)
 		match_return = re_return.search(line)
 		match_constructor = re_constructor.search(line)
-		match_method = re_method.search(line)
+		if is_interface:
+			match_method = re_interface_method.search(line)
+		else:
+			match_method = re_method.search(line)
 		if match_param:
 			param_desc_dict[match_param.group('name')] = match_param.group('desc')
 		elif match_return:
@@ -84,9 +93,8 @@ def __parse_method_header(header):
 			minfo.params.extend(params)
 			minfo.is_constructor = True
 		elif match_method:
-			minfo.scope = match_method.group('scope')
-			if not minfo.scope:
-				minfo.scope = ''
+			if not is_interface:
+				minfo.scope = match_method.group('scope')
 			minfo.return_type = match_method.group('returntype').strip()
 			minfo.name = match_method.group('name')
 			params = __parse_params(match_method.group('args'))
@@ -112,19 +120,28 @@ def parse_file(file):
 		cinfo = __parse_class_header(result[0])
 	methods = []
 	if len(result) > 1:
-		methods = [__parse_method_header(r) for r in result[1:]]
+		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[1:]]
 
 	# Hack for methods w/o headers (probably need to rethink this entire module)
-	allmethods = re_method.findall(content)
+	allmethods = []
+	if cinfo.is_interface:
+		allmethods = re_interface_method.findall(content)
+	else:
+		allmethods = re_method.findall(content)
 	mnames = [m.name for m in methods]
 	for m in allmethods:
-		if m[5] not in mnames:
+		mname = m[1] if cinfo.is_interface else m[5]
+		if mname not in mnames:
 			meth = methodinfo.MethodInfo()
-			meth.scope = m[0]
-			meth.return_type = m[4]
-			meth.name = m[5]
-			meth.params = __parse_params(m[6])
-			methods.append(meth)
+			meth.name = mname
+			if cinfo.is_interface:
+				meth.return_type = m[0].strip.replace('\n', '').replace('\t', '')
+				meth.params = __params_params(m[2])
+			else:
+				meth.scope = m[0]
+				meth.return_type = m[4]
+				meth.params = __parse_params(m[6])
+				methods.append(meth)
 
 	cinfo.methods = methods
 	return cinfo

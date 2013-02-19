@@ -5,6 +5,8 @@ class ClassInfo:
 		self.authors = []
 		self.since = ''
 		self.methods = []
+		self.is_interface = False
+		self.is_abstract = False
 
 class MethodInfo:
 	def __init__(self):
