@@ -1,4 +1,5 @@
-import cgi;
+import cgi
+from sfdoc_settings import SFDocSettings
 
 def __get_class_item(classname):
 	return '<li><a href="' + classname + '.html">' + classname + '</a></li>'
@@ -46,8 +47,10 @@ def create_outfile(classlist, cinfo, target, template_master='template_master.ht
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', indexfile)
-	with open(target, 'w+') as f:
-		f.write(new_content)
+	
+	if not SFDocSettings.test:
+		with open(target, 'w+') as f:
+			f.write(new_content)
 
 def create_index(classlist, target, template_index='template_index.html', project_name='Apex Documentation'):
 	content_index = ''
@@ -58,5 +61,6 @@ def create_index(classlist, target, template_index='template_index.html', projec
 	class_content = [__get_class_index(c) for c in classlist]
 	new_content = new_content.replace('[classes]', ''.join(class_content))
 
-	with open(target, 'w+') as f:
-		f.write(new_content)
+	if not SFDocSettings.test:
+		with open(target, 'w+') as f:
+			f.write(new_content)

@@ -14,6 +14,7 @@ def parse_args():
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file.')
+	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose).')
 	args = parser.parse_args()
 	return args
 
@@ -25,13 +26,14 @@ def get_files(dir, pattern="*.cls"):
 
 args = parse_args()
 SFDocSettings.verbose = args.verbose
+SFDocSettings.test = args.test
 [source, target] = args.dirs;
 currentdir = os.path.dirname(os.path.realpath(__file__))
 files = get_files(source, args.pattern)
 classes = [apexparser.parse_file(f) for f in files]
 os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
-if not os.path.exists(target):
+if not os.path.exists(target) and not SFDocSettings.test:
 	os.makedirs(target)
 
 indexfile = 'index.html' if not args.noindex else ''
@@ -42,5 +44,6 @@ for c in classes:
 if not args.noindex:
 	sfdocmaker.create_index(classes, target + '/index.html', project_name=args.name)
 
-shutil.copy('sfdoc.css', target)
-shutil.copy('normalize.css', target)
+if not SFDocSettings.test:
+	shutil.copy('sfdoc.css', target)
+	shutil.copy('normalize.css', target)
