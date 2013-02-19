@@ -24,7 +24,7 @@ def __readFile(file):
 	with open(file) as f:
 		return f.read()
 
-def __parse_class_header(header):	# TODO IMPLEMENT METHOD
+def __parse_class_header(header):
 	cinfo = methodinfo.ClassInfo()
 	desc = ''
 	for line in header.split('\n'):
