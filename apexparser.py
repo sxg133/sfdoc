@@ -108,12 +108,12 @@ def parse_file(file):
 	allmethods = re_method.findall(content)
 	mnames = [m.name for m in methods]
 	for m in allmethods:
-		if m[4] not in mnames:
+		if m[5] not in mnames:
 			meth = methodinfo.MethodInfo()
 			meth.scope = m[0]
-			meth.return_type = m[3]
-			meth.name = m[4]
-			meth.params = __parse_params(m[5])
+			meth.return_type = m[4]
+			meth.name = m[5]
+			meth.params = __parse_params(m[6])
 			methods.append(meth)
 
 	cinfo.methods = methods
