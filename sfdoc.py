@@ -1,5 +1,3 @@
-#!/cygdrive/c/Python27/python.exe
-
 import sys
 import os
 import glob
