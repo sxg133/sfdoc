@@ -1,3 +1,5 @@
+import cgi;
+
 def __get_class_item(classname):
 	return '<li><a href="' + classname + '.html">' + classname + '</a></li>'
 
@@ -5,7 +7,7 @@ def __get_author_content(author):
 	return '<li>' + author.name + '</li>'
 
 def __get_param_content(param):
-	return '<tr><td>' + param.name + '</td><td>' + param.param_type + '</td><td>' + param.description + '</td></tr>'
+	return '<tr><td>' + param.name + '</td><td>' + cgi.escape(param.param_type) + '</td><td>' + param.description + '</td></tr>'
 
 def __fill_in_method_content(content_method, minfo):
 	new_content = content_method.replace('[methodname]', minfo.name)
@@ -14,7 +16,7 @@ def __fill_in_method_content(content_method, minfo):
 	new_content = new_content.replace('[methoddescription]', minfo.description)
 	param_content = [__get_param_content(p) for p in minfo.params]
 	new_content = new_content.replace('[params]', ''.join(param_content))
-	new_content = new_content.replace('[returntype]',minfo.return_type)
+	new_content = new_content.replace('[returntype]', cgi.escape(minfo.return_type))
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
 	return new_content
 
