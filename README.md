@@ -32,3 +32,21 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      The title of the project that will appear at the top of each page.
 
+#### Comment Header Templates
+
+*    Class Header Template
+
+    Class Description
+
+    @author author name1 <author_email1>
+    @author author name2 <author_email2>
+    @since	yyyy-mm-dd
+
+*    Method Header Template
+
+	Method Description
+
+	@param	param_name1	param description1
+	@param	param_name2	param description2
+
+	@return	return description
