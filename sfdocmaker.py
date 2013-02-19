@@ -19,7 +19,12 @@ def __fill_in_method_content(content_method, minfo):
 	new_content = new_content.replace('[constructor]', ('(constructor)' if minfo.is_constructor else ''))
 	new_content = new_content.replace('[methoddescription]', minfo.description)
 	param_content = [__get_param_content(p) for p in minfo.params]
-	new_content = new_content.replace('[params]', ''.join(param_content))
+	if param_content:
+		new_content = new_content.replace('[params]', ''.join(param_content))
+		new_content = new_content.replace('[paramsClass]', 'params')
+	else:
+		new_content = new_content.replace('[params]', '<em>There are no parameters</em>')
+		new_content = new_content.replace('[paramsClass]', 'no-params')
 	new_content = new_content.replace('[returntype]', cgi.escape(minfo.return_type))
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
 	return new_content
