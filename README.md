@@ -16,7 +16,7 @@ Generate static HTML files from Salesforce project classes.
 
 Execute:
 
-    python sfdoc.py <source_directory> <target_directory> [--pattern] [--name]
+    python sfdoc.py <source_directory> <target_directory> [--pattern] [--name] [--verbose]
 
 The source directory should be the "classes" directory, and the target directory is the location where the static HTML files will be created.
 
