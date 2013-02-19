@@ -34,7 +34,7 @@ def __fill_in_class_content(content_master, content_method, cinfo, project_name)
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
 	return new_content
 
-def create_outfile(classlist, cinfo, target, template_master='template_master.html', template_method='template_method.html', project_name='Apex Documentation'):
+def create_outfile(classlist, cinfo, target, template_master='template_master.html', template_method='template_method.html', project_name='Apex Documentation', indexfile=''):
 	content_master = ''
 	with open(template_master) as f:
 		content_master = f.read()
@@ -45,6 +45,7 @@ def create_outfile(classlist, cinfo, target, template_master='template_master.ht
 	new_content = __fill_in_class_content(content_master, content_method, cinfo, project_name)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
+	new_content = new_content.replace('[indexfile]', indexfile)
 	with open(target, 'w+') as f:
 		f.write(new_content)
 

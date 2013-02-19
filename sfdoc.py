@@ -33,8 +33,11 @@ os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
 if not os.path.exists(target):
 	os.makedirs(target)
+
+indexfile = 'index.html' if not args.noindex else ''
+
 for c in classes:
-	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name)
+	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name, indexfile=indexfile)
 
 if not args.noindex:
 	sfdocmaker.create_index(classes, target + '/index.html', project_name=args.name)
