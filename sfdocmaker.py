@@ -9,6 +9,9 @@ def __get_author_content(author):
 def __get_param_content(param):
 	return '<tr><td>' + param.name + '</td><td>' + cgi.escape(param.param_type) + '</td><td>' + param.description + '</td></tr>'
 
+def __get_class_index(cinfo):
+	return '<tr><td><a href="' + cinfo.name +'.html">' + cinfo.name + '</a></td><td>' + cinfo.description + '</td></tr>'
+
 def __fill_in_method_content(content_method, minfo):
 	new_content = content_method.replace('[methodname]', minfo.name)
 	new_content = new_content.replace('[methodscope]', minfo.scope)
@@ -42,5 +45,17 @@ def create_outfile(classlist, cinfo, target, template_master='template_master.ht
 	new_content = __fill_in_class_content(content_master, content_method, cinfo, project_name)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
+	with open(target, 'w+') as f:
+		f.write(new_content)
+
+def create_index(classlist, target, template_index='template_index.html', project_name='Apex Documentation'):
+	content_index = ''
+	with open(template_index) as f:
+		content_index = f.read()
+
+	new_content = content_index.replace('[projectname]', project_name)
+	class_content = [__get_class_index(c) for c in classlist]
+	new_content = new_content.replace('[classes]', ''.join(class_content))
+
 	with open(target, 'w+') as f:
 		f.write(new_content)
