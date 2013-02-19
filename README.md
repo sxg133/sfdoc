@@ -20,7 +20,7 @@ Execute:
 
 The source directory should be the "classes" directory, and the target directory is the location where the static HTML files will be created.
 
-Test classes are ignored.
+Classes post-fixed with "Test" (*Test.cls) are ignored.
 
 #### Optional Flags
 
