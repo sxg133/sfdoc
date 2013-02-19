@@ -12,7 +12,7 @@ def parse_args():
 	parser.add_argument('dirs', metavar='directories', nargs=2, help='Source and target directories')
 	parser.add_argument('-p', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
-	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Versbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
+	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file.')
 	args = parser.parse_args()
 	return args
