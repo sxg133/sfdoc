@@ -1,5 +1,6 @@
 import re
 import methodinfo
+from sfdoc_settings import SFDocSettings
 
 pattern_header = r'/\*[^{;]*[{;]'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL)
@@ -24,7 +25,7 @@ def __readFile(file):
 	with open(file) as f:
 		return f.read()
 
-def __parse_class_header(header):	# TODO IMPLEMENT METHOD
+def __parse_class_header(header):
 	cinfo = methodinfo.ClassInfo()
 	desc = ''
 	for line in header.split('\n'):
@@ -44,6 +45,8 @@ def __parse_class_header(header):	# TODO IMPLEMENT METHOD
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())
+	if SFDocSettings.verbose >= 1:
+		print(cinfo.name)
 	return cinfo
 
 def __parse_params(args):
@@ -92,6 +95,11 @@ def __parse_method_header(header):
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	minfo.description = re.sub('^' + minfo.name + '\s+', '', desc.strip())
+	if SFDocSettings.verbose >= 2:
+		print('\t' + minfo.name + ' (' + minfo.scope + ' ' + minfo.return_type + ')')
+	if SFDocSettings.verbose >= 3:
+		for p in minfo.params:
+			print('\t\t' + p.name + '(' + p.param_type + ')')
 	return minfo
 
 def parse_file(file):
