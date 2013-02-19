@@ -85,3 +85,22 @@ div.method.private header {
 div.method.protected header {
 	background-color: #E9DF93;
 }
+
+table.classes.className {
+	width:30%;
+}
+
+table.classes.description {
+	width:70%;
+}
+
+
+table.classes td, table.classes th {
+	border: solid thin black;
+	background-color: white;
+	padding: 5px;
+}
+
+table.classes {
+	width:100%;
+}
