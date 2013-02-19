@@ -34,7 +34,7 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
 #### Comment Header Templates
 
-*    Class Header Template
+*Class Header Template*
 
     Class Description
 
@@ -42,7 +42,7 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
     @author author name2 <author_email2>
     @since	yyyy-mm-dd
 
-*    Method Header Template
+*Method Header Template*
 
 	Method Description
 
