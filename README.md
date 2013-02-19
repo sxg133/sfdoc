@@ -32,6 +32,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      The title of the project that will appear at the top of each page.
 
+*    --verbose
+
+     Verbosity level for console output (0=none, 1=class, 2=method, 3=param).
+
 #### Comment Header Templates
 
 *Class Header Template*
