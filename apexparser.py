@@ -1,7 +1,7 @@
 import re
 import methodinfo
 
-pattern_header = r'/\*[^{]*{'
+pattern_header = r'/\*[^{;]*[{;]'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL)
 pattern_param = r'@param\s+(?P<name>[a-zA-Z]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param)
