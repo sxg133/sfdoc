@@ -34,6 +34,7 @@ if not os.path.exists(target):
 	os.makedirs(target)
 for c in classes:
 	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name)
+sfdocmaker.create_index(classes, target + '/index.html', project_name=args.name)
 
 shutil.copy('sfdoc.css', target)
 shutil.copy('normalize.css', target)
