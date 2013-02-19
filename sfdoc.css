@@ -72,10 +72,15 @@ div.return {
 table.params th {
 }
 
+
 table.params td, table.params th {
 	border: solid thin black;
 	background-color: white;
 	padding: 5px;
+}
+
+table.noParams {
+	display: none;
 }
 
 div.method.private header {
@@ -93,7 +98,6 @@ table.classes.className {
 table.classes.description {
 	width:70%;
 }
-
 
 table.classes td, table.classes th {
 	border: solid thin black;
