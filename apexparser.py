@@ -115,17 +115,7 @@ def __parse_method_header(header, is_interface=False):
 			print('\t\t' + p.name + '(' + p.param_type + ')')
 	return minfo
 
-def parse_file(file):
-	content = __readFile(file)
-	result = re_header.findall(content)
-	cinfo = methodinfo.ClassInfo()
-	if len(result) > 0:
-		cinfo = __parse_class_header(result[0])
-	methods = []
-	if len(result) > 1:
-		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[1:]]
-
-	# Hack for methods w/o headers (probably need to rethink this entire module)
+def __parse_all_methods(content, cinfo, methods):
 	allmethods = []
 	if cinfo.is_interface:
 		allmethods = re_interface_method.findall(content)
@@ -146,6 +136,8 @@ def parse_file(file):
 				meth.params = __parse_params(m[7])
 				methods.append(meth)
 
+def __parse_properties(content):
+	props = []
 	properties = re_property.findall(content)
 	for p in properties:
 		if all(x not in p[1].lower() for x in [sfconstants.CLASS, sfconstants.INTERFACE]):
@@ -153,7 +145,23 @@ def parse_file(file):
 			prop.scope = p[0]
 			prop.property_type = p[1]
 			prop.name = p[2]
-			cinfo.properties.append(prop)
+			props.append(prop)
+	return props
+
+def parse_file(file):
+	content = __readFile(file)
+	result = re_header.findall(content)
+	cinfo = methodinfo.ClassInfo()
+	if len(result) > 0:
+		cinfo = __parse_class_header(result[0])
+	methods = []
+	if len(result) > 1:
+		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[1:]]
+
+	# Hack for methods w/o headers (probably need to rethink this entire module)
+	__parse_all_methods(content, cinfo, methods)
+
+	cinfo.properties = __parse_properties(content)
 
 	cinfo.methods = methods
 	return cinfo
