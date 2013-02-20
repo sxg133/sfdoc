@@ -24,6 +24,13 @@ footer {
 	font-size: 9pt;
 }
 
+table td, table th {
+	text-align: left;
+	border: solid thin black;
+	background-color: white;
+	padding: 5px;
+}
+
 #project-header {
 	background-color: #61B4CF;
 	padding: 5px;
@@ -77,16 +84,6 @@ div.method > div > p {
 
 div.return {
 	margin-top: 20px;
-}
-
-table.params th {
-}
-
-
-table.params td, table.params th {
-	border: solid thin black;
-	background-color: white;
-	padding: 5px;
 }
 
 table.no-params {

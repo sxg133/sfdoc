@@ -29,15 +29,26 @@ def __fill_in_method_content(content_method, minfo):
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
 	return new_content
 
-def __fill_in_class_content(content_master, content_method, cinfo):
+def __fill_in_property_content(content_property, pinfo):
+	row = '<tr class="' + pinfo.scope + '">'
+	row += '<td class="name">' + pinfo.name + '</td>'
+	row += '<td class="scope">' + pinfo.scope + '</td>'
+	row += '<td class="type">' + cgi.escape(pinfo.property_type) + '</td>'
+	row += '</tr>'
+	return row
+
+def __fill_in_class_content(content_master, content_method, content_property, cinfo):
 	new_content = content_master.replace('[projectname]', SFDocSettings.project_name)
 	new_content = new_content.replace('[classname]', cinfo.name)
 	new_content = new_content.replace('[classdescription]', cinfo.description)
 	new_content = new_content.replace('[since]', cinfo.since)
 	author_content = [__get_author_content(a) for a in cinfo.authors]
 	new_content = new_content.replace('[authors]', ''.join(author_content))
-	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if (minfo.scope.lower() in SFDocSettings.scope)]
+	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if minfo.scope.lower() in SFDocSettings.scope]
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
+	prop_content = [__fill_in_property_content(content_property, pinfo) for pinfo in cinfo.properties if pinfo.scope.lower() in SFDocSettings.scope]
+	prop_table = content_property.replace('[properties]', ''.join(prop_content))
+	new_content = new_content.replace('[propertytable]', prop_table)
 	return new_content
 
 def create_outfile(classlist, cinfo, target):
@@ -47,8 +58,11 @@ def create_outfile(classlist, cinfo, target):
 	content_method = ''
 	with open(SFDocSettings.template_method) as f:
 		content_method = f.read()
+	content_property = ''
+	with open(SFDocSettings.template_property) as f:
+		content_property = f.read()
 	
-	new_content = __fill_in_class_content(content_master, content_method, cinfo)
+	new_content = __fill_in_class_content(content_master, content_method, content_property, cinfo)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)
