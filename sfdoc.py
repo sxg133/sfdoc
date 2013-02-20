@@ -15,7 +15,6 @@ def parse_args():
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file.')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose).')
-	parser.add_argument('--noprivate', action='store_true', help='Do no write private methods.')
 	args = parser.parse_args()
 	return args
 
@@ -28,22 +27,24 @@ def get_files(dir, pattern="*.cls"):
 args = parse_args()
 SFDocSettings.verbose = args.verbose
 SFDocSettings.test = args.test
+SFDocSettings.indexfile = 'index.html' if not args.noindex else ''
+SFDocSettings.project_name = args.name
 [source, target] = args.dirs;
+
 currentdir = os.path.dirname(os.path.realpath(__file__))
 files = get_files(source, args.pattern)
 classes = [apexparser.parse_file(f) for f in files]
-os.chdir(currentdir)
 classlist = [cinfo.name for cinfo in classes]
+
+os.chdir(currentdir)
 if not os.path.exists(target) and not SFDocSettings.test:
 	os.makedirs(target)
 
-indexfile = 'index.html' if not args.noindex else ''
-
 for c in classes:
-	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name, indexfile=indexfile, noprivate=args.noprivate)
+	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html')
 
 if not args.noindex:
-	sfdocmaker.create_index(classes, target + '/index.html', project_name=args.name)
+	sfdocmaker.create_index(classes, target + '/index.html')
 
 if not SFDocSettings.test:
 	shutil.copy('sfdoc.css', target)
