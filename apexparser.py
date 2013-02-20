@@ -23,6 +23,8 @@ pattern_since = r'@since\s+(?P<date>[0-9\-/]+)'
 re_since = re.compile(pattern_since, re.I)
 pattern_class = r'(?P<scope>public|private|protected)\s+((abstract|interface)\s+)?(with\s+sharing\s+)?(class\s+)?(?P<name>[a-zA-Z]+)'
 re_class = re.compile(pattern_class, re.I)
+pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z]+)\s*{'
+re_property = re.compile(pattern_property, re.MULTILINE | re.DOTALL | re.I)
 
 def __readFile(file):
 	with open(file) as f:
@@ -143,6 +145,15 @@ def parse_file(file):
 				meth.return_type = m[5]
 				meth.params = __parse_params(m[7])
 				methods.append(meth)
+
+	properties = re_property.findall(content)
+	for p in properties:
+		if all(x not in p[1].lower() for x in [sfconstants.CLASS, sfconstants.INTERFACE]):
+			prop = methodinfo.Property()
+			prop.scope = p[0]
+			prop.property_type = p[1]
+			prop.name = p[2]
+			cinfo.properties.append(prop)
 
 	cinfo.methods = methods
 	return cinfo

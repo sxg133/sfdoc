@@ -7,6 +7,7 @@ class ClassInfo:
 		self.methods = []
 		self.is_interface = False
 		self.is_abstract = False
+		self.properties = []
 
 class MethodInfo:
 	def __init__(self):
@@ -28,3 +29,9 @@ class Author:
 	def __init__(self):
 		self.name = ''
 		self.email = ''
+
+class Property:
+	def __init__(self):
+		self.name = ''
+		self.property_type = ''
+		self.scope = ''
