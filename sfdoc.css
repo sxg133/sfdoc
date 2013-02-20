@@ -64,6 +64,10 @@ table td, table th {
 	padding: 20px 0;
 }
 
+#property-table {
+	font-size: 11pt;
+}
+
 div.method header {
 	background-color: #A3D6E7;
 	border-radius: 10px;
