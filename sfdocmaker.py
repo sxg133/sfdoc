@@ -36,7 +36,7 @@ def __fill_in_class_content(content_master, content_method, cinfo):
 	new_content = new_content.replace('[since]', cinfo.since)
 	author_content = [__get_author_content(a) for a in cinfo.authors]
 	new_content = new_content.replace('[authors]', ''.join(author_content))
-	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if not (minfo.scope.lower() in SFDocSettings.scope)]
+	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if (minfo.scope.lower() in SFDocSettings.scope)]
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
 	return new_content
 
@@ -48,7 +48,7 @@ def create_outfile(classlist, cinfo, target):
 	with open(SFDocSettings.template_method) as f:
 		content_method = f.read()
 	
-	new_content = __fill_in_class_content(content_master, content_method, cinfo, SFDocSettings.project_name)
+	new_content = __fill_in_class_content(content_master, content_method, cinfo)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)

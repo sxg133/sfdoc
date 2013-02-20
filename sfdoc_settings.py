@@ -6,4 +6,4 @@ class SFDocSettings:
 	template_index='template_index.html'
 	project_name='Apex Documentation'
 	indexfile=''
-	scope=['public', 'protected', 'private']
+	scope=['public']

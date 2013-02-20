@@ -12,9 +12,10 @@ def parse_args():
 	parser.add_argument('dirs', metavar='directories', nargs=2, help='Source and target directories')
 	parser.add_argument('-p', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
-	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
+	parser.add_argument('-s', '--scope', metavar='scope', nargs='?', help='The lowest scope documented (public, protected, private)', default="public")
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file.')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose).')
+	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
 	args = parser.parse_args()
 	return args
 
@@ -29,6 +30,10 @@ SFDocSettings.verbose = args.verbose
 SFDocSettings.test = args.test
 SFDocSettings.indexfile = 'index.html' if not args.noindex else ''
 SFDocSettings.project_name = args.name
+if args.scope.lower() == 'protected':
+	SFDocSettings.scope = ['public', 'protected']
+elif args.scope.lower() == 'private':
+	SFDocSettings.scope = ['public', 'protected', 'private']
 [source, target] = args.dirs;
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
