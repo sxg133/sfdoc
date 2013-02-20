@@ -16,7 +16,7 @@ Generate static HTML files from Salesforce project classes.
 
 Execute:
 
-    python sfdoc.py <source_directory> <target_directory> [--pattern] [--name] [--verbose] [--noindex] [--test]
+    python sfdoc.py [-OPTIONS] <source_directory> <target_directory>
 
 The source directory should be the "classes" directory, and the target directory is the location where the static HTML files will be created.
 
@@ -24,17 +24,21 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
 #### Optional Flags
 
-*    --pattern
+*    -h, --help
+
+     Show help.
+
+*    -p, --pattern
 
      Specifiy which classes to pull from the directory using a pattern (e.g. MyPrefix*.cls)
 
-*    --name
+*    -n, --name
 
      The title of the project that will appear at the top of each page.
 
-*    --verbose
+*    -s, --scope
 
-     Verbosity level for console output (0=none, 1=class, 2=method, 3=param).
+     The lowest method scope to document (public, protected, private).
 
 *    --noindex
 
@@ -43,6 +47,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 *    --test
 
      Do not write output directory or any files, just test generator (useful if combined with verbose).
+
+*    --verbose
+
+     Verbosity level for console output (0=none, 1=class, 2=method, 3=param).
 
 #### Comment Header Templates
 
