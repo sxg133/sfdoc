@@ -23,7 +23,7 @@ def __fill_in_method_content(content_method, minfo):
 		new_content = new_content.replace('[params]', ''.join(param_content))
 		new_content = new_content.replace('[paramsClass]', 'params')
 	else:
-		new_content = new_content.replace('[params]', '<em>There are no parameters</em>')
+		new_content = new_content.replace('[params]', '<em>None</em>')
 		new_content = new_content.replace('[paramsClass]', 'no-params')
 	new_content = new_content.replace('[returntype]', cgi.escape(minfo.return_type))
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
