@@ -9,7 +9,8 @@ from sfdoc_settings import SFDocSettings
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
-	parser.add_argument('dirs', metavar='directories', nargs=2, help='Source and target directories')
+	parser.add_argument('source', metavar='source_directory', help='Source directory with class files')
+	parser.add_argument('target', metavar='target_directory', help='Output directory for html files')
 	parser.add_argument('-p', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
 	parser.add_argument('-s', '--scope', metavar='scope', nargs='?', help='The lowest scope documented (public, protected, private)', default="public")
@@ -34,7 +35,7 @@ if args.scope.lower() == 'protected':
 	SFDocSettings.scope = ['public', 'protected']
 elif args.scope.lower() == 'private':
 	SFDocSettings.scope = ['public', 'protected', 'private']
-[source, target] = args.dirs;
+[source, target] = [args.source, args.target];
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 files = get_files(source, args.pattern)
