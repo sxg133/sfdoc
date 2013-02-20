@@ -18,6 +18,12 @@ em {
 	font-weight: normal;
 }
 
+footer {
+	text-align: center;
+	padding: 50px 0 30px;
+	font-size: 9pt;
+}
+
 #project-header {
 	background-color: #61B4CF;
 	padding: 5px;
