@@ -29,18 +29,18 @@ def __fill_in_method_content(content_method, minfo):
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
 	return new_content
 
-def __fill_in_class_content(content_master, content_method, cinfo, project_name):
+def __fill_in_class_content(content_master, content_method, cinfo, project_name,noprivate):
 	new_content = content_master.replace('[projectname]', project_name)
 	new_content = new_content.replace('[classname]', cinfo.name)
 	new_content = new_content.replace('[classdescription]', cinfo.description)
 	new_content = new_content.replace('[since]', cinfo.since)
 	author_content = [__get_author_content(a) for a in cinfo.authors]
 	new_content = new_content.replace('[authors]', ''.join(author_content))
-	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods]
+	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if not (minfo.scope == 'private' and noprivate)]
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
 	return new_content
 
-def create_outfile(classlist, cinfo, target, template_master='template_master.html', template_method='template_method.html', project_name='Apex Documentation', indexfile=''):
+def create_outfile(classlist, cinfo, target, template_master='template_master.html', template_method='template_method.html', project_name='Apex Documentation', indexfile='', noprivate=False):
 	content_master = ''
 	with open(template_master) as f:
 		content_master = f.read()
@@ -48,7 +48,7 @@ def create_outfile(classlist, cinfo, target, template_master='template_master.ht
 	with open(template_method) as f:
 		content_method = f.read()
 	
-	new_content = __fill_in_class_content(content_master, content_method, cinfo, project_name)
+	new_content = __fill_in_class_content(content_master, content_method, cinfo, project_name, noprivate)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', indexfile)

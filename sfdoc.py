@@ -15,6 +15,7 @@ def parse_args():
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file.')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose).')
+	parser.add_argument('--noprivate', action='store_true', help='Do no write private methods.')
 	args = parser.parse_args()
 	return args
 
@@ -39,7 +40,7 @@ if not os.path.exists(target) and not SFDocSettings.test:
 indexfile = 'index.html' if not args.noindex else ''
 
 for c in classes:
-	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name, indexfile=indexfile)
+	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html', project_name=args.name, indexfile=indexfile, noprivate=args.noprivate)
 
 if not args.noindex:
 	sfdocmaker.create_index(classes, target + '/index.html', project_name=args.name)
