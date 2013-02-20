@@ -44,6 +44,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      Do not create index.html file with class list.
 
+*    --noproperties
+
+     Do not show class properties.
+
 *    --test
 
      Do not write output directory or any files, just test generator (useful if combined with verbose).

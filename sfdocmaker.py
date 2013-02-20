@@ -46,9 +46,13 @@ def __fill_in_class_content(content_master, content_method, content_property, ci
 	new_content = new_content.replace('[authors]', ''.join(author_content))
 	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if minfo.scope.lower() in SFDocSettings.scope]
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
-	prop_content = [__fill_in_property_content(content_property, pinfo) for pinfo in cinfo.properties if pinfo.scope.lower() in SFDocSettings.scope]
-	prop_table = content_property.replace('[properties]', ''.join(prop_content))
-	new_content = new_content.replace('[propertytable]', prop_table)
+	if SFDocSettings.no_properties:
+		new_content = new_content.replace('<h3>Properties</h3>','')
+		new_content = new_content.replace('[propertytable]', '')
+	else:
+		prop_content = [__fill_in_property_content(content_property, pinfo) for pinfo in cinfo.properties if pinfo.scope.lower() in SFDocSettings.scope]
+		prop_table = content_property.replace('[properties]', ''.join(prop_content))
+		new_content = new_content.replace('[propertytable]', prop_table)
 	return new_content
 
 def create_outfile(classlist, cinfo, target):
