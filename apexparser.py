@@ -10,7 +10,7 @@ pattern_return = r'@return\s+(?P<desc>.*)'
 re_return = re.compile(pattern_return)
 pattern_constructor = r'(?P<scope>public|private|protected)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
 re_constructor = re.compile(pattern_constructor)
-pattern_method = r'(?P<scope>public|private|protected)\s(abstract\s+)?(virtual\s+)?(static\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(virtual\s+)?(static\s+)?(override\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method)
 pattern_interface_method = r'(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
 re_interface_method = re.compile(pattern_interface_method)
@@ -130,7 +130,7 @@ def parse_file(file):
 		allmethods = re_method.findall(content)
 	mnames = [m.name for m in methods]
 	for m in allmethods:
-		mname = m[1] if cinfo.is_interface else m[5]
+		mname = m[1] if cinfo.is_interface else m[6]
 		if mname not in mnames:
 			meth = methodinfo.MethodInfo()
 			meth.name = mname
@@ -139,8 +139,8 @@ def parse_file(file):
 				meth.params = __params_params(m[2])
 			else:
 				meth.scope = m[0]
-				meth.return_type = m[4]
-				meth.params = __parse_params(m[6])
+				meth.return_type = m[5]
+				meth.params = __parse_params(m[7])
 				methods.append(meth)
 
 	cinfo.methods = methods
