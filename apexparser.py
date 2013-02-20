@@ -1,6 +1,7 @@
 import re
 import methodinfo
 from sfdoc_settings import SFDocSettings
+import sfconstants
 
 pattern_header = r'/\*[^{;]*[{;]'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL | re.I)
@@ -44,9 +45,9 @@ def __parse_class_header(header):
 			cinfo.since = match_since.group('date')	# TODO CHECK OUT PYTHON DATE TYPES
 		elif match_class:
 			cinfo.name = match_class.group('name')
-			if 'interface' in match_class.group().lower():
+			if sfconstants.INTERFACE in match_class.group().lower():
 				cinfo.is_interface = True
-			elif 'abstract' in match_class.group().lower():
+			elif sfconstants.ABSTRACT in match_class.group().lower():
 				cinfo.is_abstract = True
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())

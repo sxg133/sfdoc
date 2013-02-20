@@ -1,0 +1,2 @@
+INTERFACE = 'interface'
+ABSTRACT = 'abstract'
