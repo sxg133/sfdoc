@@ -51,7 +51,7 @@ def __parse_class_header(header):
 				cinfo.is_abstract = True
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
-	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())
+	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())	# remove class name from beginning of description
 	if SFDocSettings.verbose >= 1:
 		print(cinfo.name)
 	return cinfo
@@ -105,7 +105,7 @@ def __parse_method_header(header, is_interface=False):
 			minfo.params.extend(params)
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
-	minfo.description = re.sub('^' + minfo.name + '\s+', '', desc.strip())
+	minfo.description = re.sub('^' + minfo.name + '\s+', '', desc.strip())	# remove method name from beginning of description
 	if SFDocSettings.verbose >= 2:
 		print('\t' + minfo.name + ' (' + minfo.scope + ' ' + minfo.return_type + ')')
 	if SFDocSettings.verbose >= 3:
