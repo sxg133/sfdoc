@@ -1,7 +1,7 @@
 class ClassInfo:
 	def __init__(self):
 		self.name = ''
-		self.desc = ''
+		self.description = ''
 		self.authors = []
 		self.since = ''
 		self.methods = []
