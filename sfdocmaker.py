@@ -1,5 +1,6 @@
 import cgi
 from sfdoc_settings import SFDocSettings
+import re
 
 def __get_class_item(classname):
 	return '<li><a href="' + classname + '.html">' + classname + '</a></li>'
@@ -70,8 +71,11 @@ def create_outfile(classlist, cinfo, target):
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)
-	mnamelist = ''.join(['<li class="' + m.scope + '"><a href="#' + m.name + '">' + m.name + '</a>' for m in cinfo.methods if m.scope in SFDocSettings.scope])
-	new_content = new_content.replace('[methodnamelist]', mnamelist)
+	if not SFDocSettings.no_method_list:
+		mnamelist = ''.join(['<li class="' + m.scope + '"><a href="#' + m.name + '">' + m.name + '</a>' for m in cinfo.methods if m.scope in SFDocSettings.scope])
+		new_content = new_content.replace('[methodnamelist]', mnamelist)
+	else:
+		new_content = re.sub(r'\<aside[^\<]*method-list-container.*/aside\>', '', new_content, count=2, flags = re.MULTILINE | re.DOTALL)
 	
 	if not SFDocSettings.test:
 		with open(target, 'w+') as f:

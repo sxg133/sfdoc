@@ -16,6 +16,7 @@ def parse_args():
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
 	parser.add_argument('-s', '--scope', metavar='scope', nargs='?', help='The lowest scope documented (public, protected, private)', default="public")
 	parser.add_argument('--noproperties', action='store_true', help='Do not display class properties')
+	parser.add_argument('--nomethodlist', action='store_true', help='Do not display method sidebar')
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose)')
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
@@ -44,6 +45,7 @@ if args.scope.lower() == 'protected':
 elif args.scope.lower() == 'private':
 	SFDocSettings.scope = ['public', 'protected', 'private']
 SFDocSettings.no_properties = args.noproperties
+SFDocSettings.no_method_list = args.nomethodlist
 [source, target] = [args.source, args.target]
 
 currentdir = os.path.dirname(os.path.realpath(__file__))

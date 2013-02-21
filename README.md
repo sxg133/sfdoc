@@ -54,6 +54,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      Do not show class properties.
 
+*    --nomethodlist
+
+     Do not show the method list sidebar.
+
 *    --test
 
      Do not write output directory or any files, just test generator (useful if combined with verbose).
