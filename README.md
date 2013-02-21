@@ -24,10 +24,6 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
 #### Options
 
-*    -h, --help
-
-     Show help.
-
 *    -p, --pattern
 
      Specifiy which classes to pull from the directory using a pattern (e.g. MyPrefix*.cls)
@@ -45,6 +41,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
      Verbosity level for console output (0=none, 1=class, 2=method, 3=param).
 
 #### Flags
+
+*    -h, --help
+
+     Show help.
 
 *    -r, --regex
 
