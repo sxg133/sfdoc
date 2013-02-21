@@ -35,6 +35,10 @@ aside > h3 {
 	display: inline;
 }
 
+a {
+	cursor: pointer;
+}
+
 #project-header {
 	background-color: #61B4CF;
 	padding: 5px;
