@@ -31,6 +31,10 @@ table td, table th {
 	padding: 5px;
 }
 
+aside > h3 {
+	display: inline;
+}
+
 #project-header {
 	background-color: #61B4CF;
 	padding: 5px;
@@ -47,11 +51,6 @@ table td, table th {
 	background-color: #E8E8E8;
 }
 
-.content {
-	margin: auto;
-	width: 90%;
-}
-
 #project-name {
 	padding: 20px 0;
 }
@@ -62,6 +61,25 @@ table td, table th {
 
 #method-list-container {
 	right: 0;
+}
+
+#method-tab {
+	right: -25px;
+	margin-top: 34px;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-k-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+#class-tab {
+	left: -25px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-k-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 .left {
@@ -78,6 +96,38 @@ table td, table th {
 	overflow-x: hidden;
 	height: 100%;
 	padding-right: 30px;
+	margin-top: 30px;
+}
+
+.tab {
+	padding: 5px 10px 30px 10px;
+	position: fixed;
+	margin-top: 30px;
+	z-index: 99;
+	background-color: #61B4CF;
+	color: white;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+	font-size: 14pt;
+	cursor: pointer;
+	display: none;
+}
+
+.close {
+	text-decoration: none;
+	background-color: #FF7F7F;
+	padding: 0 3px;
+	color: white;
+	border-radius: 4px;
+	font-weight: bold;
+	font-size: 9pt;
+	position: relative;
+	top: -3px;
+}
+
+.content {
+	margin: auto;
+	width: 90%;
 }
 
 div.method header {
