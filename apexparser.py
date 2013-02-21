@@ -140,7 +140,7 @@ def __parse_properties(content):
 	props = []
 	properties = re_property.findall(content)
 	for p in properties:
-		if all(x not in p[1].lower() for x in [sfconstants.CLASS, sfconstants.INTERFACE]):
+		if all(x not in p[1].lower() for x in [sfconstants.CLASS, sfconstants.INTERFACE, sfconstants.ENUM]):
 			prop = methodinfo.Property()
 			prop.scope = p[0]
 			prop.property_type = p[1]
