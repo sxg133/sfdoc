@@ -70,6 +70,8 @@ def create_outfile(classlist, cinfo, target):
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)
+	mnamelist = ''.join(['<li class="' + m.scope + '"><a href="#' + m.name + '">' + m.name + '</a>' for m in cinfo.methods])
+	new_content = new_content.replace('[methodnamelist]', mnamelist)
 	
 	if not SFDocSettings.test:
 		with open(target, 'w+') as f:

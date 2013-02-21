@@ -38,14 +38,6 @@ table td, table th {
 	font-family: Geneva, sans-serif;
 }
 
-#sidebar {
-	float: left;
-	position: fixed;
-	overflow-y: auto;
-	overflow-x: hidden;
-	height: 100%;
-}
-
 #wrapper {
 	margin: auto;
 	min-width: 500px;
@@ -66,6 +58,26 @@ table td, table th {
 
 #property-table {
 	font-size: 11pt;
+}
+
+#method-list-container {
+	right: 0;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.sidebar {
+	position: fixed;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
+	padding-right: 30px;
 }
 
 div.method header {
