@@ -5,25 +5,25 @@ import sfconstants
 
 pattern_header = r'/\*[^{;]*[{;]'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL | re.I)
-pattern_param = r'@param\s+(?P<name>[a-zA-Z]+)\s+(?P<desc>.*)'
+pattern_param = r'@param\s+(?P<name>[a-zA-Z0-9]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param, re.I)
 pattern_return = r'@return\s+(?P<desc>.*)'
 re_return = re.compile(pattern_return, re.I)
-pattern_constructor = r'(?P<scope>public|private|protected)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+pattern_constructor = r'(?P<scope>public|private|protected)\s+(?P<name>[a-zA-Z_0-9]+)\s*(?P<args>\(.*\))'
 re_constructor = re.compile(pattern_constructor, re.I)
-pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(virtual\s+)?(static\s+)?(override\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+pattern_method = r'(?P<scope>public|private|protected)\s+(abstract\s+)?(virtual\s+)?(static\s+)?(override\s+)?(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_0-9]+)\s*(?P<args>\(.*\))'
 re_method = re.compile(pattern_method, re.I)
-pattern_interface_method = r'(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_]+)\s*(?P<args>\(.*\))'
+pattern_interface_method = r'(?P<returntype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z_0-9]+)\s*(?P<args>\(.*\))'
 re_interface_method = re.compile(pattern_interface_method, re.I)
-pattern_arg = r'(?P<argtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z]+)'
+pattern_arg = r'(?P<argtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z0-9]+)'
 re_arg = re.compile(pattern_arg, re.I)
 pattern_author = r'@author\s+(?P<name>[^\<]*)\<(?P<email>[a-zA-Z0-9@\.]+)\>'
 re_author = re.compile(pattern_author, re.I)
 pattern_since = r'@since\s+(?P<date>[0-9\-/]+)'
 re_since = re.compile(pattern_since, re.I)
-pattern_class = r'(?P<scope>public|private|protected)\s+((abstract|interface)\s+)?(with\s+sharing\s+)?(class\s+)?(?P<name>[a-zA-Z]+)'
+pattern_class = r'(?P<scope>public|private|protected)\s+((abstract|interface)\s+)?(with\s+sharing\s+)?(class\s+)?(?P<name>[a-zA-Z0-9]+)'
 re_class = re.compile(pattern_class, re.I)
-pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z]+)\s*{'
+pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z0-9]+)\s*{'
 re_property = re.compile(pattern_property, re.MULTILINE | re.DOTALL | re.I)
 
 def __readFile(file):
