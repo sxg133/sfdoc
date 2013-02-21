@@ -152,11 +152,17 @@ def parse_file(file):
 	content = __readFile(file)
 	result = re_header.findall(content)
 	cinfo = methodinfo.ClassInfo()
-	if len(result) > 0:
-		cinfo = __parse_class_header(result[0])
 	methods = []
-	if len(result) > 1:
-		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[1:]]
+	method_start_index = 1
+	if len(result) > 0:
+		if any(x in result[0] for x in [sfconstants.CLASS, sfconstants.INTERFACE]):
+			cinfo = __parse_class_header(result[0])
+		else:
+			match_class = re_class.search(content)
+			if match_class:
+				cinfo = __parse_class_header(match_class.group(0))
+	if len(result) > method_start_index:
+		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[method_start_index:]]
 
 	# Hack for methods w/o headers (probably need to rethink this entire module)
 	__parse_all_methods(content, cinfo, methods)
