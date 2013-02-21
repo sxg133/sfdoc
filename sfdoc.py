@@ -5,12 +5,14 @@ import apexparser
 import sfdocmaker
 import shutil
 from sfdoc_settings import SFDocSettings
+import re
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
 	parser.add_argument('source', metavar='source_directory', help='Source directory with class files')
 	parser.add_argument('target', metavar='target_directory', help='Output directory for html files')
-	parser.add_argument('-p', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
+	parser.add_argument('-', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
+	parser.add_argument('-r', '--regex', action='store_true', help='The specified pattern is a regular expression')
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
 	parser.add_argument('-s', '--scope', metavar='scope', nargs='?', help='The lowest scope documented (public, protected, private)', default="public")
 	parser.add_argument('--noproperties', action='store_true', help='Do not display class properties')
@@ -20,10 +22,16 @@ def parse_args():
 	args = parser.parse_args()
 	return args
 
-def get_files(dir, pattern="*.cls"):
+def get_files(dir, pattern="*.cls", isregex=False):
 	files = []
 	os.chdir(dir)
-	files = [f for f in glob.glob(pattern) if not f.endswith('Test.cls')]	# Ignoring test classes for now
+	if isregex:
+		re_file = re.compile(pattern)
+		for f in os.listdir(dir):
+			if re_file.match(f):
+				files.append(f)
+	else:
+		files = [f for f in glob.glob(pattern) if not f.endswith('Test.cls')]	# Ignoring test classes for now
 	return files
 
 args = parse_args()
@@ -39,7 +47,7 @@ SFDocSettings.no_properties = args.noproperties
 [source, target] = [args.source, args.target]
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
-files = get_files(source, args.pattern)
+files = get_files(source, args.pattern, args.regex)
 classes = [apexparser.parse_file(f) for f in files]
 classlist = [cinfo.name for cinfo in classes]
 

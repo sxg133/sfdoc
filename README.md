@@ -22,7 +22,7 @@ The source directory should be the "classes" directory, and the target directory
 
 Classes post-fixed with "Test" (*Test.cls) are ignored.
 
-#### Optional Flags
+#### Options
 
 *    -h, --help
 
@@ -39,6 +39,12 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 *    -s, --scope
 
      The lowest method scope to document (public, protected, private).
+
+#### Flags
+
+*    -r, --regex
+
+     Use if specified pattern is a regular expression.
 
 *    --noindex
 
