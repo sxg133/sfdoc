@@ -22,10 +22,10 @@ def parse_args():
 	args = parser.parse_args()
 	return args
 
-def get_files(dir, pattern="*.cls", isregex=False):
+def get_files(dir, pattern="*.cls", is_regex=False):
 	files = []
 	os.chdir(dir)
-	if isregex:
+	if is_regex:
 		re_file = re.compile(pattern)
 		for f in os.listdir(dir):
 			if re_file.match(f):
