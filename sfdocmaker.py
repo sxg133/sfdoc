@@ -16,6 +16,7 @@ def __get_class_index(cinfo):
 
 def __fill_in_method_content(content_method, minfo):
 	new_content = content_method.replace('[methodname]', minfo.name)
+	new_content = new_content.replace('[methodoverloadnumber]', str(minfo.overload_number))
 	new_content = new_content.replace('[methodscope]', minfo.scope)
 	new_content = new_content.replace('[constructor]', ('(constructor)' if minfo.is_constructor else ''))
 	new_content = new_content.replace('[methoddescription]', minfo.description)
@@ -72,7 +73,7 @@ def create_outfile(classlist, cinfo, target):
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)
 	if not SFDocSettings.no_method_list:
-		mnamelist = ''.join(['<li class="' + m.scope + '"><a href="#' + m.name + '">' + m.name + '</a>' for m in cinfo.methods if m.scope in SFDocSettings.scope])
+		mnamelist = ''.join(['<li class="' + m.scope + '"><a href="#' + m.name + str(m.overload_number) + '">' + m.name + '</a>' for m in cinfo.methods if m.scope in SFDocSettings.scope])
 		new_content = new_content.replace('[methodnamelist]', mnamelist)
 	else:
 		new_content = re.sub(r'\<aside[^\<]*method-list-container.*/aside\>', '', new_content, count=2, flags = re.MULTILINE | re.DOTALL)

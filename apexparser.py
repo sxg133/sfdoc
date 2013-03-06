@@ -136,6 +136,7 @@ def __parse_all_methods(content, cinfo, methods):
 				meth.params = __parse_params(m[7])
 				methods.append(meth)
 
+
 def __parse_properties(content):
 	props = []
 	properties = re_property.findall(content)
@@ -166,6 +167,15 @@ def parse_file(file):
 
 	# Hack for methods w/o headers (probably need to rethink this entire module)
 	__parse_all_methods(content, cinfo, methods)
+
+	# another hack for method overload number
+	method_overload_count_dict = {}
+	for m in methods:
+		if m.name not in method_overload_count_dict:
+			method_overload_count_dict[m.name] = 0
+		else:
+			method_overload_count_dict[m.name] += 1
+		m.overload_number = method_overload_count_dict[m.name]
 
 	cinfo.properties = __parse_properties(content)
 

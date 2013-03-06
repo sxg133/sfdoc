@@ -18,6 +18,7 @@ class MethodInfo:
 		self.return_description = ''
 		self.return_type = ''
 		self.is_constructor = False
+		self.overload_number = 0
 
 class ParamInfo:
 	def __init__(self):
