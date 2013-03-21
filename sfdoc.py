@@ -64,5 +64,5 @@ if not args.noindex:
 	sfdocmaker.create_index(classes, target + '/index.html')
 
 if not SFDocSettings.test:
-	shutil.copy('sfdoc.css', target)
-	shutil.copy('normalize.css', target)
+	shutil.copy('css/sfdoc.css', target)
+	shutil.copy('css/normalize.css', target)
