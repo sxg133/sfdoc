@@ -36,7 +36,7 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      The lowest method scope to document (public, protected, private).
 
-*    --verbose
+*    -v, --verbose
 
      Verbosity level for console output (0=none, 1=class, 2=method, 3=param).
 
