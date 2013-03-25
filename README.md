@@ -28,6 +28,10 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
      Specifiy which classes to pull from the directory using a pattern (e.g. MyPrefix*.cls)
 
+*    -tp, --testpattern
+
+     Specifiy which classes are tests and should be ignored.
+
 *    -n, --name
 
      The title of the project that will appear at the top of each page.
@@ -48,7 +52,7 @@ Classes post-fixed with "Test" (*Test.cls) are ignored.
 
 *    -r, --regex
 
-     Use if specified pattern is a regular expression.
+     Use if specified patterns are regular expressions.
 
 *    --noindex
 

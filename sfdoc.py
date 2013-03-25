@@ -13,7 +13,8 @@ def parse_args():
 	parser.add_argument('source', metavar='source_directory', help='Source directory with class files')
 	parser.add_argument('target', metavar='target_directory', help='Output directory for html files')
 	parser.add_argument('-p', '--pattern', metavar='pattern', nargs='?', help='File pattern for apex classes', default="*.cls")
-	parser.add_argument('-r', '--regex', action='store_true', help='The specified pattern is a regular expression')
+	parser.add_argument('-tp', '--testpattern', metavar='testpattern', nargs='?', help='File pattern for apex classes', default="*Test.cls")
+	parser.add_argument('-r', '--regex', action='store_true', help='The specified patterns are regular expressions')
 	parser.add_argument('-n', '--name', metavar='name', nargs='?', help='Project name', default="Apex Documentation")
 	parser.add_argument('-s', '--scope', metavar='scope', nargs='?', help='The lowest scope documented (public, protected, private)', default="public")
 	parser.add_argument('--noproperties', action='store_true', help='Do not display class properties')
@@ -24,7 +25,7 @@ def parse_args():
 	args = parser.parse_args()
 	return args
 
-def get_files(dir, pattern="*.cls", is_regex=False):
+def get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
 	"""Return a list of files.
 
 	Keyword arguments:
@@ -39,11 +40,10 @@ def get_files(dir, pattern="*.cls", is_regex=False):
 		re_file = re.compile(pattern)
 
 	for f in os.listdir(dir):
-		if not f.endswith('Test.cls'):	# Ignoring test classes for now (TODO USE ARGUMENT TO SPECIFY TEST CLASS REGEX / PATTERN)
-			if is_regex and re_file.match(f):
-				files.append( os.path.join(dir, f) )
-			elif not is_regex and fnmatch.fnmatchcase(f, pattern):
-				files.append( os.path.join(dir, f) )
+		if is_regex and re_file.match(f) and not re_file.match(f):
+			files.append( os.path.join(dir, f) )
+		elif not is_regex and fnmatch.fnmatchcase(f, pattern) and not fnmatch.fnmatchcase(f, test_pattern):
+			files.append( os.path.join(dir, f) )
 
 	return files
 
@@ -62,7 +62,7 @@ SFDocSettings.no_method_list = args.nomethodlist
 [source, target] = [args.source, args.target]
 
 # get files, parse them, and create class info objects
-files = get_files(source, args.pattern, args.regex)
+files = get_files(source, args.pattern, args.testpattern, args.regex)
 classes = [apexparser.parse_file(f) for f in files]
 classlist = [cinfo.name for cinfo in classes]
 
