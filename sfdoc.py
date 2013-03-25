@@ -38,14 +38,10 @@ def get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
 
 	if is_regex:
 		re_file = re.compile(pattern)
-
-	for f in os.listdir(dir):
-		if is_regex and re_file.match(f) and not re_file.match(f):
-			files.append( os.path.join(dir, f) )
-		elif not is_regex and fnmatch.fnmatchcase(f, pattern) and not fnmatch.fnmatchcase(f, test_pattern):
-			files.append( os.path.join(dir, f) )
-
-	return files
+		re_test_file = re.compile(test_pattern)
+		return [os.path.join(dir, f) for f in os.listdir(dir) if re_file.match(f) and not re_test_file.match(f)]
+	else:
+		return [os.path.join(dir, f) for f in os.listdir(dir) if fnmatch.fnmatchcase(f, pattern) and not fnmatch.fnmatchcase(f, test_pattern)]
 
 # set the settings based on defaults and command line arguments
 args = parse_args()
