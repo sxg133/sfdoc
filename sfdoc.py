@@ -1,13 +1,14 @@
 import os
-import glob
 import argparse
 import apexparser
 import sfdocmaker
 import shutil
 from sfdoc_settings import SFDocSettings
 import re
+import fnmatch
 
 def parse_args():
+	"""Returns parsed command line arguments."""
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
 	parser.add_argument('source', metavar='source_directory', help='Source directory with class files')
 	parser.add_argument('target', metavar='target_directory', help='Output directory for html files')
@@ -24,17 +25,29 @@ def parse_args():
 	return args
 
 def get_files(dir, pattern="*.cls", is_regex=False):
+	"""Return a list of files.
+
+	Keyword arguments:
+	dir 		-- The directory to retrieve files from
+	pattern 	-- Pattern file names must match.
+	is_regex	-- Is the specified pattern a regular expression?
+
+	"""
 	files = []
-	os.chdir(dir)
+
 	if is_regex:
 		re_file = re.compile(pattern)
-		for f in os.listdir(dir):
-			if re_file.match(f):
-				files.append(f)
-	else:
-		files = [f for f in glob.glob(pattern) if not f.endswith('Test.cls')]	# Ignoring test classes for now
+
+	for f in os.listdir(dir):
+		if not f.endswith('Test.cls'):	# Ignoring test classes for now (TODO USE ARGUMENT TO SPECIFY TEST CLASS REGEX / PATTERN)
+			if is_regex and re_file.match(f):
+				files.append( os.path.join(dir, f) )
+			elif not is_regex and fnmatch.fnmatchcase(f, pattern):
+				files.append( os.path.join(dir, f) )
+
 	return files
 
+# set the settings based on defaults and command line arguments
 args = parse_args()
 SFDocSettings.verbose = args.verbose
 SFDocSettings.test = args.test
@@ -48,12 +61,11 @@ SFDocSettings.no_properties = args.noproperties
 SFDocSettings.no_method_list = args.nomethodlist
 [source, target] = [args.source, args.target]
 
-currentdir = os.path.dirname(os.path.realpath(__file__))
+# get files, parse them, and create class info objects
 files = get_files(source, args.pattern, args.regex)
 classes = [apexparser.parse_file(f) for f in files]
 classlist = [cinfo.name for cinfo in classes]
 
-os.chdir(currentdir)
 if not os.path.exists(target) and not SFDocSettings.test:
 	os.makedirs(target)
 
