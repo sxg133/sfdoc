@@ -27,10 +27,17 @@ pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z
 re_property = re.compile(pattern_property, re.MULTILINE | re.DOTALL | re.I)
 
 def __readFile(file):
+	"""Read the contents of the file and return as string."""
 	with open(file) as f:
 		return f.read()
 
 def __parse_class_header(header):
+	"""Parse the class header and return a ClassInfo object.
+
+	Keyword arguments:
+	header	-- The class header (including declaration)
+
+	"""
 	cinfo = methodinfo.ClassInfo()
 	desc = ''
 	for line in header.split('\n'):
@@ -59,6 +66,12 @@ def __parse_class_header(header):
 	return cinfo
 
 def __parse_params(args):
+	"""Parse the parameters of a method and return a list of ParamInfo objects.
+
+	Keyword arguments:
+	arg	-- The arguments in the method declaration
+
+	"""
 	params = []
 	for arg in args.split(','):
 		arg_match = re_arg.search(arg)
@@ -70,6 +83,13 @@ def __parse_params(args):
 	return params
 
 def __parse_method_header(header, is_interface=False):
+	"""Parse the method header and return a MethodInfo object.
+
+	Keyword Arguments:
+	header			-- The method header (including declaration)
+	is_interface	-- Is the method's class an interface?
+
+	"""
 	minfo = methodinfo.MethodInfo()
 	param_desc_dict = {}
 	desc = ''
@@ -115,19 +135,27 @@ def __parse_method_header(header, is_interface=False):
 			print('\t\t' + p.name + '(' + p.param_type + ')')
 	return minfo
 
-def __parse_all_methods(content, cinfo, methods):
+def __parse_all_methods(content, methods, is_interface=False):
+	"""Parse all methods in a class and add to the methods (for methods without headers)
+
+	Keyword Arguments:
+	content			-- The content of the class file (string)
+	methods			-- The list of MethodInfo objects for the class
+	is_interface	-- Is the class an interface?
+
+	"""
 	allmethods = []
-	if cinfo.is_interface:
+	if is_interface:
 		allmethods = re_interface_method.findall(content)
 	else:
 		allmethods = re_method.findall(content)
 	mnames = [m.name for m in methods]
 	for m in allmethods:
-		mname = m[1] if cinfo.is_interface else m[6]
+		mname = m[1] if is_interface else m[6]
 		if mname not in mnames:
 			meth = methodinfo.MethodInfo()
 			meth.name = mname
-			if cinfo.is_interface:
+			if is_interface:
 				meth.return_type = m[0].strip.replace('\n', '').replace('\t', '')
 				meth.params = __params_params(m[2])
 			else:
@@ -138,6 +166,12 @@ def __parse_all_methods(content, cinfo, methods):
 
 
 def __parse_properties(content):
+	"""Parse the class content and return the list of Property objects.
+
+	Keyword Arguments:
+	content	-- The content of the class file (string)
+
+	"""
 	props = []
 	properties = re_property.findall(content)
 	for p in properties:
@@ -150,6 +184,12 @@ def __parse_properties(content):
 	return props
 
 def parse_file(file):
+	"""Parse the class file and return the ClassInfo object.
+
+	Keyword Arguments:
+	file	-- Full path of the class file
+
+	"""
 	content = __readFile(file)
 	result = re_header.findall(content)
 	cinfo = methodinfo.ClassInfo()
@@ -166,7 +206,7 @@ def parse_file(file):
 		methods = [__parse_method_header(r, cinfo.is_interface) for r in result[method_start_index:]]
 
 	# Hack for methods w/o headers (probably need to rethink this entire module)
-	__parse_all_methods(content, cinfo, methods)
+	__parse_all_methods(content, methods, cinfo.is_interface)
 
 	# another hack for method overload number
 	method_overload_count_dict = {}
