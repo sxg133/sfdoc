@@ -31,7 +31,7 @@ class Author:
 		self.name = ''
 		self.email = ''
 
-class Property:
+class PropertyInfo:
 	def __init__(self):
 		self.name = ''
 		self.property_type = ''

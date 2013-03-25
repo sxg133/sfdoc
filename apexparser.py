@@ -166,7 +166,7 @@ def __parse_all_methods(content, methods, is_interface=False):
 
 
 def __parse_properties(content):
-	"""Parse the class content and return the list of Property objects.
+	"""Parse the class content and return the list of PropertyInfo objects.
 
 	Keyword Arguments:
 	content	-- The content of the class file (string)
@@ -176,7 +176,7 @@ def __parse_properties(content):
 	properties = re_property.findall(content)
 	for p in properties:
 		if all(x not in p[1].lower() for x in [sfconstants.CLASS, sfconstants.INTERFACE, sfconstants.ENUM]):
-			prop = methodinfo.Property()
+			prop = methodinfo.PropertyInfo()
 			prop.scope = p[0]
 			prop.property_type = p[1]
 			prop.name = p[2]
