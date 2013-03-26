@@ -20,17 +20,15 @@ Execute:
 
 The source directory should be the "classes" directory, and the target directory is the location where the static HTML files will be created.
 
-Classes post-fixed with "Test" (*Test.cls) are ignored.
-
 #### Options
 
 *    -p, --pattern
 
-     Specifiy which classes to pull from the directory using a pattern (e.g. MyPrefix*.cls)
+     Unix style pattern to specifiy which classes to pull from the directory using a pattern (e.g. MyPrefix*.cls) (default: *.cls)
 
 *    -tp, --testpattern
 
-     Specifiy which classes are tests and should be ignored.
+     Unix style pattern to specifiy which classes are tests and should be ignored (default: *Test.cls)
 
 *    -n, --name
 
