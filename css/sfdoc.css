@@ -185,3 +185,28 @@ table.classes td, table.classes th {
 table.classes {
 	width:100%;
 }
+
+div.version-info {
+	margin-top: 15px;
+	position: relative;
+	height: auto;
+	overflow: hidden;
+}
+
+div.line-wrapper {
+	position: relative;
+	height: auto;
+	overflow: hidden;
+	max-width: 300px;
+	margin: 3px 0;
+}
+
+div.line-wrapper > div {
+	float: left;
+}
+
+div.label {
+	width: 20%;
+	text-align: left;
+	margin-right: 20px;
+}
