@@ -21,6 +21,8 @@ pattern_author = r'@author\s+(?P<name>[^\<]*)(?:\<(?P<email>[a-zA-Z0-9@\.]+)\>)?
 re_author = re.compile(pattern_author, re.I)
 pattern_since = r'@since\s+(?P<date>[0-9\-/]+)'
 re_since = re.compile(pattern_since, re.I)
+pattern_version = r'@version\s+(?P<version_number>[^,]+)\s*,\s*(?P<version_date>.*)'
+re_version = re.compile(pattern_version, re.I)
 pattern_class = r'(?P<scope>public|private|protected)\s+((abstract|interface)\s+)?(with\s+sharing\s+)?(class\s+)?(?P<name>[a-zA-Z0-9]+)'
 re_class = re.compile(pattern_class, re.I)
 pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z0-9]+)\s*{'
@@ -45,6 +47,7 @@ def __parse_class_header(header):
 		match_author = re_author.search(line)
 		match_since = re_since.search(line)
 		match_class = re_class.search(line)
+		match_version = re_version.search(line)
 		if match_author:
 			author = methodinfo.Author()
 			author.name = match_author.group('name').strip()
@@ -58,6 +61,9 @@ def __parse_class_header(header):
 				cinfo.is_interface = True
 			elif sfconstants.ABSTRACT in match_class.group().lower():
 				cinfo.is_abstract = True
+		elif match_version:
+			cinfo.version_number = match_version.group('version_number')
+			cinfo.version_date = match_version.group('version_date')
 		elif line:
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())	# remove class name from beginning of description

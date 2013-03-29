@@ -8,6 +8,8 @@ class ClassInfo:
 		self.is_interface = False
 		self.is_abstract = False
 		self.properties = []
+		self.version_number = ''
+		self.version_date = ''
 
 class MethodInfo:
 	def __init__(self):
