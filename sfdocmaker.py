@@ -44,6 +44,8 @@ def __fill_in_class_content(content_master, content_method, content_property, ci
 	new_content = new_content.replace('[classname]', cinfo.name)
 	new_content = new_content.replace('[classdescription]', cinfo.description)
 	new_content = new_content.replace('[since]', cinfo.since)
+	new_content = new_content.replace('[versionnumber]', cinfo.version_number)
+	new_content = new_content.replace('[versiondate]', cinfo.version_date)
 	author_content = [__get_author_content(a) for a in cinfo.authors]
 	new_content = new_content.replace('[authors]', ''.join(author_content))
 	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if minfo.scope.lower() in SFDocSettings.scope]
