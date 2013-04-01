@@ -3,7 +3,7 @@ import methodinfo
 from sfdoc_settings import SFDocSettings
 import sfconstants
 
-pattern_header = r'/\*[^{;]*[{;]'
+pattern_header = r'/\*.*?{'
 re_header = re.compile(pattern_header, re.MULTILINE | re.DOTALL | re.I)
 pattern_param = r'@param\s+(?P<name>[a-zA-Z0-9]+)\s+(?P<desc>.*)'
 re_param = re.compile(pattern_param, re.I)
@@ -162,8 +162,8 @@ def __parse_all_methods(content, methods, is_interface=False):
 			meth = methodinfo.MethodInfo()
 			meth.name = mname
 			if is_interface:
-				meth.return_type = m[0].strip.replace('\n', '').replace('\t', '')
-				meth.params = __params_params(m[2])
+				meth.return_type = m[0].strip().replace('\n', '').replace('\t', '')
+				meth.params = __parse_params(m[2])
 			else:
 				meth.scope = m[0]
 				meth.return_type = m[5]
