@@ -50,9 +50,9 @@ SFDocSettings.test = args.test
 SFDocSettings.indexfile = 'index.html' if not args.noindex else ''
 SFDocSettings.project_name = args.name
 if args.scope.lower() == 'protected':
-	SFDocSettings.scope = ['public', 'protected']
+	SFDocSettings.scope = ['global', 'public', 'protected']
 elif args.scope.lower() == 'private':
-	SFDocSettings.scope = ['public', 'protected', 'private']
+	SFDocSettings.scope = ['global', 'public', 'protected', 'private']
 SFDocSettings.no_properties = args.noproperties
 SFDocSettings.no_method_list = args.nomethodlist
 [source, target] = [args.source, args.target]
