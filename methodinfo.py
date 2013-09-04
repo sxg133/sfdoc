@@ -10,6 +10,8 @@ class ClassInfo:
 		self.properties = []
 		self.version_number = ''
 		self.version_date = ''
+		self.parent_class = ''
+		self.interfaces = []
 
 class MethodInfo:
 	def __init__(self):

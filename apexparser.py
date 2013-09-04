@@ -23,7 +23,7 @@ pattern_since = r'@since\s+(?P<date>[0-9\-/]+)'
 re_since = re.compile(pattern_since, re.I)
 pattern_version = r'@version\s+(?P<version_number>[^,]+)\s*,\s*(?P<version_date>.*)'
 re_version = re.compile(pattern_version, re.I)
-pattern_class = r'(?P<scope>global|public|private|protected)\s+((with sharing|without sharing|abstract|interface|virtual)\s+)*(class\s+)?(?P<name>[a-zA-Z0-9]+)\s*(extends\s+(?P<parent>[a-zA-Z0-9]))?'
+pattern_class = r'(?P<scope>global|public|private|protected)\s+((with sharing|without sharing|abstract|interface|virtual)\s+)*(class\s+)?(?P<name>[a-zA-Z0-9]+)\s*(extends\s+(?P<parent>[a-zA-Z0-9]+))?\s*(implements\s+(?P<interfaces>[a-zA-Z0-9,\s]+))?'
 re_class = re.compile(pattern_class, re.I)
 pattern_property = r'(?P<scope>public|private|protected)\s+(?P<paramtype>[a-zA-Z\<\>,_\s]+)\s+(?P<name>[a-zA-Z0-9]+)\s*{'
 re_property = re.compile(pattern_property, re.MULTILINE | re.DOTALL | re.I)
@@ -61,6 +61,11 @@ def __parse_class_header(header):
 				cinfo.is_interface = True
 			elif sfconstants.ABSTRACT in match_class.group().lower():
 				cinfo.is_abstract = True
+			if match_class.group('parent'):
+				cinfo.parent_class = match_class.group('parent')
+			if match_class.group('interfaces'):
+				cinfo.interfaces = match_class.group('interfaces').split(',')
+				cinfo.interfaces = [interface.strip() for interface in cinfo.interfaces]
 		elif match_version:
 			cinfo.version_number = match_version.group('version_number')
 			cinfo.version_date = match_version.group('version_date')
@@ -68,7 +73,15 @@ def __parse_class_header(header):
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())	# remove class name from beginning of description
 	if SFDocSettings.verbose >= 1:
-		print(cinfo.name)
+		class_name = cinfo.name
+		if cinfo.parent_class:
+			class_name += ' (' + cinfo.parent_class + ')'
+		if cinfo.interfaces:
+			class_name += ' ('
+			for interface in cinfo.interfaces:
+				class_name += interface
+			class_name += ')'
+		print(class_name)
 	return cinfo
 
 def __parse_params(args):

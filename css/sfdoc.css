@@ -209,3 +209,7 @@ div.label {
 	text-align: left;
 	margin-right: 20px;
 }
+
+.interfaces li {
+	list-style: circle;
+}

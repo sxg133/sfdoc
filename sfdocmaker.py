@@ -31,7 +31,7 @@ def __fill_in_method_content(content_method, minfo):
 	new_content = new_content.replace('[returndescription]',minfo.return_description)
 	return new_content
 
-def __fill_in_property_content(content_property, pinfo):
+def __fill_in_property_content(pinfo):
 	row = '<tr class="' + pinfo.scope + '">'
 	row += '<td class="name">' + pinfo.name + '</td>'
 	row += '<td class="scope">' + pinfo.scope + '</td>'
@@ -39,7 +39,10 @@ def __fill_in_property_content(content_property, pinfo):
 	row += '</tr>'
 	return row
 
-def __fill_in_class_content(content_master, content_method, content_property, cinfo):
+def __fill_in_interface_content(interface):
+	return '<li><a href="%s.html" title="%s">%s</a></li>' % (interface, interface, interface)
+
+def __fill_in_class_content(content_master, content_method, content_parent_class, content_interfaces, content_property, cinfo):
 	new_content = content_master.replace('[projectname]', SFDocSettings.project_name)
 	new_content = new_content.replace('[classname]', cinfo.name)
 	new_content = new_content.replace('[classdescription]', cinfo.description)
@@ -50,13 +53,25 @@ def __fill_in_class_content(content_master, content_method, content_property, ci
 	new_content = new_content.replace('[authors]', ''.join(author_content))
 	method_content = [__fill_in_method_content(content_method, minfo) for minfo in cinfo.methods if minfo.scope.lower() in SFDocSettings.scope]
 	new_content = new_content.replace('[methodlist]', ''.join(method_content))
+
 	if SFDocSettings.no_properties:
 		new_content = new_content.replace('<h3>Properties</h3>','')
 		new_content = new_content.replace('[propertytable]', '')
 	else:
-		prop_content = [__fill_in_property_content(content_property, pinfo) for pinfo in cinfo.properties if pinfo.scope.lower() in SFDocSettings.scope]
+		prop_content = [__fill_in_property_content(pinfo) for pinfo in cinfo.properties if pinfo.scope.lower() in SFDocSettings.scope]
 		prop_table = content_property.replace('[properties]', ''.join(prop_content))
 		new_content = new_content.replace('[propertytable]', prop_table)
+
+	if cinfo.parent_class:
+		new_content = new_content.replace('[parentclass]', content_parent_class.replace('[parentclassname]', cinfo.parent_class))
+	else:
+		new_content = new_content.replace('[parentclass]', '')
+
+	if cinfo.interfaces:
+		new_content = new_content.replace('[interfaces]', content_interfaces.replace('[interfaces]', ''.join([__fill_in_interface_content(interface) for interface in cinfo.interfaces])))
+	else:
+		new_content = new_content.replace('[interfaces]', '')
+
 	return new_content
 
 def create_outfile(classlist, cinfo, target):
@@ -69,8 +84,14 @@ def create_outfile(classlist, cinfo, target):
 	content_property = ''
 	with open(SFDocSettings.template_property) as f:
 		content_property = f.read()
+	content_parent_class = ''
+	with open(SFDocSettings.template_parent_class) as f:
+		content_parent_class = f.read()
+	content_interfaces = ''
+	with open(SFDocSettings.template_interfaces) as f:
+		content_interfaces = f.read()
 	
-	new_content = __fill_in_class_content(content_master, content_method, content_property, cinfo)
+	new_content = __fill_in_class_content(content_master, content_method, content_parent_class, content_interfaces, content_property, cinfo)
 	class_items = [__get_class_item(c) for c in classlist]
 	new_content = new_content.replace('[classlist]', ''.join(class_items))
 	new_content = new_content.replace('[indexfile]', SFDocSettings.indexfile)
