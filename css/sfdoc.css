@@ -210,6 +210,14 @@ div.label {
 	margin-right: 20px;
 }
 
+.interface-info {
+	margin-top: 20px;
+}
+
+.parent-class {
+	max-width: 700px;
+}
+
 .interfaces li {
 	list-style: circle;
 }
