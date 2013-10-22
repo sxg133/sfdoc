@@ -147,6 +147,8 @@ def __parse_method_header(header, is_interface=False):
 					p.description = param_desc_dict[p.name]
 			minfo.params.extend(params)
 		elif line:
+			if desc:
+				desc += '<br />'
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	minfo.description = re.sub('^' + minfo.name + '\s+', '', desc.strip())	# remove method name from beginning of description
 	if SFDocSettings.verbose >= 2:
