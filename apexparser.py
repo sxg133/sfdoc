@@ -139,6 +139,8 @@ def __parse_method_header(header, is_interface=False):
 		elif match_method:
 			if not is_interface:
 				minfo.scope = match_method.group('scope')
+			else:
+				minfo.scope = 'public'
 			minfo.return_type = match_method.group('returntype').strip()
 			minfo.name = match_method.group('name')
 			params = __parse_params(match_method.group('args'))
@@ -172,6 +174,7 @@ def __parse_all_methods(content, methods, is_interface=False):
 		allmethods = re_interface_method.findall(content)
 	else:
 		allmethods = re_method.findall(content)
+
 	mnames = [m.name for m in methods]
 	for m in allmethods:
 		mname = m[1] if is_interface else m[6]
@@ -179,13 +182,14 @@ def __parse_all_methods(content, methods, is_interface=False):
 			meth = methodinfo.MethodInfo()
 			meth.name = mname
 			if is_interface:
+				meth.scope = 'public'
 				meth.return_type = m[0].strip().replace('\n', '').replace('\t', '')
 				meth.params = __parse_params(m[2])
 			else:
 				meth.scope = m[0]
 				meth.return_type = m[5]
 				meth.params = __parse_params(m[7])
-				methods.append(meth)
+			methods.append(meth)
 
 
 def __parse_properties(content):
