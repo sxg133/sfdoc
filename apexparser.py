@@ -70,6 +70,8 @@ def __parse_class_header(header):
 			cinfo.version_number = match_version.group('version_number')
 			cinfo.version_date = match_version.group('version_date')
 		elif line:
+			if desc:
+				desc += '<br />'
 			desc += re.sub('(/\*+|\*/)', '', line.strip())
 	cinfo.description = re.sub('^' + cinfo.name + '\s+', '', desc.strip())	# remove class name from beginning of description
 	if SFDocSettings.verbose >= 1:
