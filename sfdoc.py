@@ -7,7 +7,7 @@ from sfdoc_settings import SFDocSettings
 import re
 import fnmatch
 
-def parse_args():
+def __parse_args(argv=sys.argv):
 	"""Returns parsed command line arguments."""
 	parser = argparse.ArgumentParser(description='Create documentation for SFDC apex code.')
 	parser.add_argument('source', metavar='source_directory', help='Source directory with class files')
@@ -22,10 +22,10 @@ def parse_args():
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose)')
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
-	args = parser.parse_args()
+	args = parser.parse_args(argv)
 	return args
 
-def get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
+def __get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
 	"""Return a list of files.
 
 	Keyword arguments:
@@ -43,34 +43,41 @@ def get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
 	else:
 		return [os.path.join(dir, f) for f in os.listdir(dir) if fnmatch.fnmatchcase(f, pattern) and not fnmatch.fnmatchcase(f, test_pattern)]
 
-# set the settings based on defaults and command line arguments
-args = parse_args()
-SFDocSettings.verbose = args.verbose
-SFDocSettings.test = args.test
-SFDocSettings.indexfile = 'index.html' if not args.noindex else ''
-SFDocSettings.project_name = args.name
-if args.scope.lower() == 'protected':
-	SFDocSettings.scope = ['global', 'public', 'protected']
-elif args.scope.lower() == 'private':
-	SFDocSettings.scope = ['global', 'public', 'protected', 'private']
-SFDocSettings.no_properties = args.noproperties
-SFDocSettings.no_method_list = args.nomethodlist
-[source, target] = [args.source, args.target]
 
-# get files, parse them, and create class info objects
-files = get_files(source, args.pattern, args.testpattern, args.regex)
-classes = [apexparser.parse_file(f) for f in files]
-classlist = [cinfo.name for cinfo in classes]
+def main(argv=None):
+	if argv is None:
+		argv = sys.argv
+	# set the settings based on defaults and command line arguments
+	args = __parse_args()
+	SFDocSettings.verbose = args.verbose
+	SFDocSettings.test = args.test
+	SFDocSettings.indexfile = 'index.html' if not args.noindex else ''
+	SFDocSettings.project_name = args.name
+	if args.scope.lower() == 'protected':
+		SFDocSettings.scope = ['global', 'public', 'protected']
+	elif args.scope.lower() == 'private':
+		SFDocSettings.scope = ['global', 'public', 'protected', 'private']
+	SFDocSettings.no_properties = args.noproperties
+	SFDocSettings.no_method_list = args.nomethodlist
+	[source, target] = [args.source, args.target]
 
-if not os.path.exists(target) and not SFDocSettings.test:
-	os.makedirs(target)
+	# get files, parse them, and create class info objects
+	files = __get_files(source, args.pattern, args.testpattern, args.regex)
+	classes = [apexparser.parse_file(f) for f in files]
+	classlist = [cinfo.name for cinfo in classes]
 
-for c in classes:
-	sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html')
+	if not os.path.exists(target) and not SFDocSettings.test:
+		os.makedirs(target)
 
-if not args.noindex:
-	sfdocmaker.create_index(classes, target + '/index.html')
+	for c in classes:
+		sfdocmaker.create_outfile(classlist, c, target + '/' + c.name + '.html')
 
-if not SFDocSettings.test:
-	shutil.copy(SFDocSettings.resource_css_sfdoc, target)
-	shutil.copy(SFDocSettings.resource_css_normalize, target)
+	if not args.noindex:
+		sfdocmaker.create_index(classes, target + '/index.html')
+
+	if not SFDocSettings.test:
+		shutil.copy(SFDocSettings.resource_css_sfdoc, target)
+		shutil.copy(SFDocSettings.resource_css_normalize, target)
+
+if __name__ == "__main__":
+	sys.exit(main())
