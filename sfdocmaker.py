@@ -78,18 +78,23 @@ def create_outfile(classlist, cinfo, target):
 	content_master = ''
 	with open(SFDocSettings.template_master) as f:
 		content_master = f.read()
+		
 	content_method = ''
 	with open(SFDocSettings.template_method) as f:
 		content_method = f.read()
+		
 	content_property = ''
 	with open(SFDocSettings.template_property) as f:
 		content_property = f.read()
+		
 	content_parent_class = ''
 	with open(SFDocSettings.template_parent_class) as f:
 		content_parent_class = f.read()
+		
 	content_interfaces = ''
 	with open(SFDocSettings.template_interfaces) as f:
 		content_interfaces = f.read()
+		
 	
 	new_content = __fill_in_class_content(content_master, content_method, content_parent_class, content_interfaces, content_property, cinfo)
 	class_items = [__get_class_item(c) for c in classlist]
