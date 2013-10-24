@@ -33,24 +33,73 @@ class SFDocApp:
 			ipady=5
 			)
 
-		# source directory
 		self.source_directory = StringVar()
 		self.make_dir_entry(
-			'Source Directory:', 
+			"Source Directory:", 
 			self.source_directory, 
 			self.get_source_directory,
 			0, 0,
 			group_source_target
 			)
 
-		# target directory
 		self.target_directory = StringVar()
 		self.make_dir_entry(
-			'Target Directory:', 
+			"Target Directory:", 
 			self.target_directory, 
 			self.get_target_directory,
 			1, 0,
 			group_source_target
+			)
+
+
+		# Code Options group
+		group_code_options = LabelFrame(
+			self.frame,
+			text="Code Options"
+			)
+		group_code_options.grid(
+			row=3,
+			column=0,
+			rowspan=3,
+			columnspan=2,
+			sticky='NW',
+			padx=5,
+			pady=5,
+			ipadx=5,
+			ipady=5
+			)
+
+		self.class_pattern = StringVar()
+		self.make_text_entry(
+			'Class Pattern:',
+			self.class_pattern,
+			3, 0,
+			group_code_options
+			)
+
+		self.test_pattern = StringVar()
+		self.make_text_entry(
+			'Test Pattern:',
+			self.test_pattern,
+			4, 0,
+			group_code_options
+			)
+
+		# Scope group
+		group_scope = LabelFrame(
+			self.frame,
+			text="Code Options"
+			)
+		group_scope.grid(
+			row=6,
+			column=0,
+			rowspan=3,
+			columnspan=1,
+			sticky='NW',
+			padx=5,
+			pady=5,
+			ipadx=5,
+			ipady=5
 			)
 
 		# exit button
@@ -67,16 +116,27 @@ class SFDocApp:
 			master,
 			text=label_text
 			).grid(row=grid_row, column=grid_start_column)
-		self.target_directory = StringVar()
-		entry_target_directory = Entry(
+
+		entry_directory = Entry(
 			master,
-			textvariable = self.target_directory
+			textvariable=textvar
 			).grid(row=grid_row, column=grid_start_column+1)
-		button_target_directory = Button(
+
+		button_directory = Button(
 			master,
 			text="...",
 			command=pick_directory_callback
 			).grid(row=grid_row, column=grid_start_column+2)
+
+	def make_text_entry(self, label_text, textvar, grid_row, grid_start_column, master):
+		label = Label(
+			master,
+			text=label_text,
+			).grid(row=grid_row, column=grid_start_column)
+		entry = Entry(
+			master,
+			textvariable=textvar
+			).grid(row=grid_row, column=grid_start_column+1)
 
 	def get_source_directory(self):
 		self.set_directory_entry(self.source_directory, 'Select apex class directory...')
