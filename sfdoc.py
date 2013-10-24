@@ -6,6 +6,7 @@ import shutil
 from sfdoc_settings import SFDocSettings
 import re
 import fnmatch
+import sys
 
 def __parse_args(argv=sys.argv):
 	"""Returns parsed command line arguments."""
