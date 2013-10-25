@@ -23,6 +23,8 @@ def __parse_args(argv=sys.argv):
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose)')
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
+	if 'sfdoc.py' in argv:
+		argv.remove('sfdoc.py')
 	args = parser.parse_args(argv)
 	return args
 
@@ -81,4 +83,4 @@ def main(argv=None):
 		shutil.copy(SFDocSettings.resource_css_normalize, target)
 
 if __name__ == "__main__":
-	sys.exit(main())
+	sys.exit(main(sys.argv))
