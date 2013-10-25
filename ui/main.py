@@ -71,7 +71,7 @@ class SFDocApp:
 
 		self.class_pattern = StringVar()
 		self.make_text_entry(
-			'Class Pattern:',
+			"Class Pattern:",
 			self.class_pattern,
 			3, 0,
 			group_code_options
@@ -79,7 +79,7 @@ class SFDocApp:
 
 		self.test_pattern = StringVar()
 		self.make_text_entry(
-			'Test Pattern:',
+			"Test Pattern:",
 			self.test_pattern,
 			4, 0,
 			group_code_options
@@ -88,7 +88,7 @@ class SFDocApp:
 		# Scope group
 		group_scope = LabelFrame(
 			self.frame,
-			text="Code Options"
+			text="Scope"
 			)
 		group_scope.grid(
 			row=6,
@@ -101,6 +101,30 @@ class SFDocApp:
 			ipadx=5,
 			ipady=5
 			)
+
+		self.scope = {
+			'public' : IntVar(),
+			'protected' : IntVar(),
+			'private' : IntVar()
+		}
+
+		Checkbutton(
+			group_scope,
+			text="public",
+			variable = self.scope['public']
+			).grid(row=6, column=0, sticky="NW")
+
+		Checkbutton(
+			group_scope,
+			text="protected",
+			variable = self.scope['protected']
+			).grid(row=7, column=0, sticky="NW")
+
+		Checkbutton(
+			group_scope,
+			text="private",
+			variable = self.scope['private']
+			).grid(row=8, column=0, sticky="NW")
 
 		# exit button
 		# self.button_exit = Button(
