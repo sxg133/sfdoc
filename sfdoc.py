@@ -7,6 +7,7 @@ from sfdoc_settings import SFDocSettings
 import re
 import fnmatch
 import sys
+from ui import main_window
 
 def __parse_args(argv=sys.argv):
 	"""Returns parsed command line arguments."""
@@ -23,6 +24,10 @@ def __parse_args(argv=sys.argv):
 	parser.add_argument('--noindex', action='store_true', help='Do not create index file')
 	parser.add_argument('--test', action='store_true', help='Do not write files, just test generator (useful if combined with verbose)')
 	parser.add_argument('-v', '--verbose', metavar='verbose', nargs='?', help='Verbosity level (0=none, 1=class, 2=method, 3=param)', type=int, default=0)
+
+	# just add this for help text
+	parser.add_argument('--ui', action='store_true', help='Launch the SFDoc user interface.')
+
 	if 'sfdoc.py' in argv:
 		argv.remove('sfdoc.py')
 	args = parser.parse_args(argv)
@@ -50,6 +55,12 @@ def __get_files(dir, pattern="*.cls", test_pattern="*Test.cls", is_regex=False):
 def main(argv=None):
 	if argv is None:
 		argv = sys.argv
+
+	# if ui is specified, launch main window
+	if '--ui' in argv:
+		main_window.main()
+		return
+
 	# set the settings based on defaults and command line arguments
 	args = __parse_args()
 	SFDocSettings.verbose = args.verbose

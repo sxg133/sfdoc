@@ -8,6 +8,8 @@ class SFDocApp:
 		self.frame = Frame(master)
 		self.frame.pack()
 
+		self.set_defaults()
+
 		# open directory options
 		self.dir_opt = {
 			'initialdir' : 'C:\\',
@@ -33,7 +35,6 @@ class SFDocApp:
 			ipady=5
 			)
 
-		self.source_directory = StringVar()
 		self.make_dir_entry(
 			"Source Directory:", 
 			self.source_directory, 
@@ -42,7 +43,6 @@ class SFDocApp:
 			group_source_target
 			)
 
-		self.target_directory = StringVar()
 		self.make_dir_entry(
 			"Target Directory:", 
 			self.target_directory, 
@@ -69,7 +69,6 @@ class SFDocApp:
 			ipady=5
 			)
 
-		self.class_pattern = StringVar()
 		self.make_text_entry(
 			"Class Pattern:",
 			self.class_pattern,
@@ -77,7 +76,6 @@ class SFDocApp:
 			group_code_options
 			)
 
-		self.test_pattern = StringVar()
 		self.make_text_entry(
 			"Test Pattern:",
 			self.test_pattern,
@@ -85,13 +83,44 @@ class SFDocApp:
 			group_code_options
 			)
 
+		Checkbutton(
+			group_code_options,
+			text="regex",
+			variable = self.regex
+			).grid(row=5, column=1, sticky="NW")
+
+		# output options
+		group_output = LabelFrame(
+			self.frame,
+			text="Output Options"
+			)
+		group_output.grid(
+			row=7,
+			column=0,
+			rowspan=4,
+			columnspan=2,
+			sticky='NW',
+			padx=5,
+			pady=5,
+			ipadx=5,
+			ipady=5
+			)
+
+		self.make_text_entry(
+			"Project Name:",
+			self.project_name,
+			7, 0,
+			group_output
+			)
+
+
 		# Scope group
 		group_scope = LabelFrame(
-			self.frame,
+			group_output,
 			text="Scope"
 			)
 		group_scope.grid(
-			row=6,
+			row=8,
 			column=0,
 			rowspan=3,
 			columnspan=1,
@@ -102,55 +131,113 @@ class SFDocApp:
 			ipady=5
 			)
 
-		self.scope = {
-			'public' : IntVar(),
-			'protected' : IntVar(),
-			'private' : IntVar()
-		}
-
 		Checkbutton(
 			group_scope,
 			text="public",
 			variable = self.scope['public']
-			).grid(row=6, column=0, sticky="NW")
+			).grid(row=8, column=0, sticky="NW")
 
 		Checkbutton(
 			group_scope,
 			text="protected",
 			variable = self.scope['protected']
-			).grid(row=7, column=0, sticky="NW")
+			).grid(row=9, column=0, sticky="NW")
 
 		Checkbutton(
 			group_scope,
 			text="private",
 			variable = self.scope['private']
-			).grid(row=8, column=0, sticky="NW")
+			).grid(row=10, column=0, sticky="NW")
+
+
+		# Exclusion group
+		exclusion_group = LabelFrame(
+			group_output,
+			text="Exclusions"
+			)
+		exclusion_group.grid(
+			row=8,
+			column=1,
+			rowspan=3,
+			columnspan=1,
+			sticky='NW',
+			padx=5,
+			pady=5,
+			ipadx=5,
+			ipady=5
+			)
+
+		Checkbutton(
+			exclusion_group,
+			text="Exclude properties",
+			variable = self.exclude_properties
+			).grid(row=8, column=1, sticky="NW")
+
+		Checkbutton(
+			exclusion_group,
+			text="Exclude method sidebar",
+			variable = self.exclude_method_sidebar
+			).grid(row=9, column=1, sticky="NW")
+
+		Checkbutton(
+			exclusion_group,
+			text="Exclude index file",
+			variable = self.exclude_index_file
+			).grid(row=10, column=1, sticky="NW")
+
+		# generate button
+		self.button_exit = Button(
+			self.frame,
+			text="Generate Doc",
+			command=self.create_doc
+			)
+		self.button_exit.grid(row=11, column=0)
 
 		# exit button
-		# self.button_exit = Button(
-		# 	frame,
-		# 	text="Exit",
-		# 	fg="red",
-		# 	command=frame.quit
-		# 	)
-		# self.button_exit.grid(row=5, column=2)
+		self.button_exit = Button(
+			self.frame,
+			text="Exit",
+			command=self.frame.quit
+			)
+		self.button_exit.grid(row=11, column=1)
+
+	def set_defaults(self):
+		self.source_directory = StringVar()
+		self.target_directory = StringVar()
+		self.class_pattern = StringVar()
+		self.test_pattern = StringVar()
+		self.regex = IntVar()
+		self.project_name = StringVar()
+		self.scope = {
+			'public' : IntVar(),
+			'protected' : IntVar(),
+			'private' : IntVar()
+		}
+		self.exclude_properties = IntVar()
+		self.exclude_method_sidebar = IntVar()
+		self.exclude_index_file = IntVar()
+
+		self.class_pattern.set('*.cls')
+		self.test_pattern.set('*Test.cls')
+		self.project_name.set('Apex Class Documentation')
+		self.scope['public'] = True
 
 	def make_dir_entry(self, label_text, textvar, pick_directory_callback, grid_row, grid_start_column, master):
 		label_directory = Label(
 			master,
 			text=label_text
-			).grid(row=grid_row, column=grid_start_column)
+			).grid(row=grid_row, column=grid_start_column, padx=10)
 
 		entry_directory = Entry(
 			master,
 			textvariable=textvar
-			).grid(row=grid_row, column=grid_start_column+1)
+			).grid(row=grid_row, column=grid_start_column+1, padx=10)
 
 		button_directory = Button(
 			master,
 			text="...",
 			command=pick_directory_callback
-			).grid(row=grid_row, column=grid_start_column+2)
+			).grid(row=grid_row, column=grid_start_column+2, padx=10)
 
 	def make_text_entry(self, label_text, textvar, grid_row, grid_start_column, master):
 		label = Label(
@@ -178,6 +265,37 @@ class SFDocApp:
 
 	def pick_directory(self):
 		return tkFileDialog.askdirectory(**self.dir_opt)
+
+	def create_doc(self):
+		args = self.create_args()
+
+
+	def create_args(self):
+		scope = 'public'
+		if self.scope['protected']:
+			scope = 'protected'
+		if self.scope['private']:
+			scope = 'private'
+
+		args = [
+			'-p', self.class_pattern.get(),
+			'-tp', self.test_pattern.get(),
+			'-n', self.project_name,
+			self.source_directory.get(),
+			self.target_directory.get()
+		]
+
+		if self.regex:
+			args.append('--regex')
+		if self.exclude_properties:
+			args.append('--noproperties')
+		if self.exclude_method_sidebar:
+			args.append('--nomethodlist')
+		if self.exclude_index_file:
+			args.append('--noindex')
+
+		return args
+
 
 def main(argv=sys.argv):
 	root = Tk()
