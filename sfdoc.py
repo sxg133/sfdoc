@@ -1,5 +1,5 @@
 from sfdoc_core import sfdoc_main
-from ui import main_window
+import main_window
 import sys
 
 def main(argv=None):

@@ -1,6 +1,8 @@
 import sys
 from Tkinter import *
 import tkFileDialog
+from sfdoc_core import sfdoc_main
+import tkMessageBox
 
 class SFDocApp:
 
@@ -266,10 +268,6 @@ class SFDocApp:
 	def pick_directory(self):
 		return tkFileDialog.askdirectory(**self.dir_opt)
 
-	def create_doc(self):
-		args = self.create_args()
-
-
 	def create_args(self):
 		scope = 'public'
 		if self.scope['protected']:
@@ -280,7 +278,7 @@ class SFDocApp:
 		args = [
 			'-p', self.class_pattern.get(),
 			'-tp', self.test_pattern.get(),
-			'-n', self.project_name,
+			'-n', self.project_name.get(),
 			self.source_directory.get(),
 			self.target_directory.get()
 		]
@@ -295,6 +293,23 @@ class SFDocApp:
 			args.append('--noindex')
 
 		return args
+
+	def create_doc(self):
+		args = self.create_args()
+		title = ''
+		dialog = ''
+		try:
+			sfdoc_main.main(args)
+			tkMessageBox.showInfo(
+				'Success!',
+				'Doc generated successfully'
+				)
+		except Exception as inst:
+			tkMessageBox.showInfo(
+				'Error!',
+				'An error occured!'	# TODO : FIX WORLD'S MOST USELESS ERROR MESSAGE
+				)
+			print(inst.args)
 
 
 def main(argv=sys.argv):
