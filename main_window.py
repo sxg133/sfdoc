@@ -203,27 +203,6 @@ class SFDocApp:
 			)
 		self.button_exit.grid(row=11, column=1)
 
-	def set_defaults(self):
-		self.source_directory = StringVar()
-		self.target_directory = StringVar()
-		self.class_pattern = StringVar()
-		self.test_pattern = StringVar()
-		self.regex = IntVar()
-		self.project_name = StringVar()
-		self.scope = {
-			'public' : IntVar(),
-			'protected' : IntVar(),
-			'private' : IntVar()
-		}
-		self.exclude_properties = IntVar()
-		self.exclude_method_sidebar = IntVar()
-		self.exclude_index_file = IntVar()
-
-		self.class_pattern.set('*.cls')
-		self.test_pattern.set('*Test.cls')
-		self.project_name.set('Apex Class Documentation')
-		self.scope['public'] = True
-
 	def make_dir_entry(self, label_text, textvar, pick_directory_callback, grid_row, grid_start_column, master):
 		label_directory = Label(
 			master,
@@ -268,6 +247,27 @@ class SFDocApp:
 	def pick_directory(self):
 		return tkFileDialog.askdirectory(**self.dir_opt)
 
+	def set_defaults(self):
+		self.source_directory = StringVar()
+		self.target_directory = StringVar()
+		self.class_pattern = StringVar()
+		self.test_pattern = StringVar()
+		self.regex = IntVar()
+		self.project_name = StringVar()
+		self.scope = {
+			'public' : IntVar(),
+			'protected' : IntVar(),
+			'private' : IntVar()
+		}
+		self.exclude_properties = IntVar()
+		self.exclude_method_sidebar = IntVar()
+		self.exclude_index_file = IntVar()
+
+		self.class_pattern.set('*.cls')
+		self.test_pattern.set('*Test.cls')
+		self.project_name.set('Apex Class Documentation')
+		self.scope['public'].set(1)
+
 	def create_args(self):
 		scope = 'public'
 		if self.scope['protected']:
@@ -283,13 +283,13 @@ class SFDocApp:
 			self.target_directory.get()
 		]
 
-		if self.regex:
+		if self.regex.get():
 			args.append('--regex')
-		if self.exclude_properties:
+		if self.exclude_properties.get():
 			args.append('--noproperties')
-		if self.exclude_method_sidebar:
+		if self.exclude_method_sidebar.get():
 			args.append('--nomethodlist')
-		if self.exclude_index_file:
+		if self.exclude_index_file.get():
 			args.append('--noindex')
 
 		return args
