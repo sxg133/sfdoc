@@ -56,7 +56,7 @@ def main(args=None):
 		args = sys.args
 
 	# set the settings based on defaults and command line arguments
-	args = __parse_args()
+	args = __parse_args(args)
 
 	SFDocSettings.verbose = args.verbose
 	SFDocSettings.test = args.test
