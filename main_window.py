@@ -300,12 +300,12 @@ class SFDocApp:
 		dialog = ''
 		try:
 			sfdoc_main.main(args)
-			tkMessageBox.showInfo(
+			tkMessageBox.showinfo(
 				'Success!',
 				'Doc generated successfully'
 				)
 		except Exception as inst:
-			tkMessageBox.showInfo(
+			tkMessageBox.showerror(
 				'Error!',
 				'An error occured!'	# TODO : FIX WORLD'S MOST USELESS ERROR MESSAGE
 				)
