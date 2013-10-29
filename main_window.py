@@ -307,7 +307,7 @@ class SFDocApp:
 		except Exception as inst:
 			tkMessageBox.showerror(
 				'Error!',
-				'An error occured!'	# TODO : FIX WORLD'S MOST USELESS ERROR MESSAGE
+				'The follwoing error occured: ' + str(inst)
 				)
 			print(inst.args)
 
