@@ -314,6 +314,7 @@ class SFDocApp:
 
 def main(argv=sys.argv):
 	root = Tk()
+	root.wm_title("SFDoc")
 	app = SFDocApp(root)
 	root.mainloop()
 	try:
